@@ -41,11 +41,11 @@ function SignUpPage() {
 
   return (
     <>
-      <h2 className="signup-title">Let's create your account</h2>
+      {/* <h2 className="signup-title">Let's create your account</h2>
       <p className="signup-text">
         Setting up your account is quick and completely free. No obligations or
         long-term contracts involved.
-      </p>
+      </p> */}
       <div className="signup-container">
         <h2 className="signup-title">Sign Up</h2>
         <form onSubmit={handleSubmit} noValidate method="POST">

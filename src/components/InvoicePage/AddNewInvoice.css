@@ -1,0 +1,248 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+.invoice-container {
+  /* max-width: 1200px; */
+  margin: 20px auto;
+  background: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.invoice-header {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+  background-color: #ffffff;
+  height: 10vh;
+  padding: 15px;
+}
+
+.invoice-header h1 {
+  font-size: 24px;
+  /* margin: 0 auto; */
+  text-align: center;
+  flex-grow: 1;
+}
+
+.invoice-actions .btn {
+  padding: 10px 15px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.invoice-actions .btn.primary {
+  background-color: #28a745;
+}
+
+.details-container {
+  background-color: #ffffff;
+  width: 100%;
+  border-radius: 15px;
+}
+
+.invoice-details {
+  margin: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+.invoice-details h2 {
+  font-size: 20px;
+  padding: 5px 10px;
+}
+
+.details-form .form-group {
+  /* margin-bottom: 15px; */
+  position: relative;
+  width: 100%;
+  height: 50px;
+  margin: 20px 0;
+}
+
+.details-form .form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.details-form input,
+.details-form select,
+.details-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.details-form input {
+  width: 100%;
+  padding: 20px 45px 20px 20px;
+  height: 75%;
+  background: transparent;
+  border: 1px thin black;
+  /* outline: none; */
+  border: px solid rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
+  font-size: 16px;
+  color: black;
+  margin-top: 2px;
+}
+
+.details-form input::placeholder {
+  /* color: #fff; */
+  padding-left: 5px;
+}
+
+hr {
+  margin: 15px 30px;
+  height: 6px;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  box-shadow: 0px 0px 0px 0px #f2f2f2;
+  border: none;
+}
+
+.line-items {
+  margin: 20px;
+}
+
+.line-items h2 {
+  font-size: 20px;
+  padding: 5px 10px;
+}
+
+.items-list .add-item {
+  padding: 10px;
+  border: 1px dashed #ccc;
+  background: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.items-list {
+  display: flex;
+  justify-content: space-between; /* Pushes children to the far ends */
+  align-items: flex-start; /* Aligns them at the top */
+  width: 100%;
+  position: relative;
+  flex-direction: column;
+}
+
+.totals {
+  margin-left: auto; /* Pushes it to the right */
+  margin-top: 10px;
+  border: 1px solid rgba(19, 1, 1, 0.559);
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 65%;
+  height: 30vh;
+  margin-bottom: 30px;
+}
+
+.totals p {
+  margin: 10px 8px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+
+span {
+  font-weight: lighter;
+}
+
+.discount,
+.shipping {
+  margin: 3px 0;
+  display: flex;
+  flex-direction: column;
+  column-gap: 12px;
+}
+
+.totals .total {
+  font-weight: bold;
+}
+
+.attachments {
+  margin-bottom: 20px;
+}
+
+.attachments-upload {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.attachments-upload .btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.settings-panel {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.settings-panel ul {
+  list-style: none;
+  padding: 0;
+}
+
+.settings-panel li {
+  margin-bottom: 10px;
+}
+
+.settings-panel span {
+  font-weight: bold;
+}
+
+/* styling dropdown and date picker */
+.dropdown {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.new-customer-form {
+  margin-top: 8px;
+}
+
+.new-customer-form input {
+  width: calc(100% - 100px);
+  padding: 8px;
+  margin-right: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.datepicker-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+}
