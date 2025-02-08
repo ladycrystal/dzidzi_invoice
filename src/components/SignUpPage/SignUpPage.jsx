@@ -41,94 +41,92 @@ function SignUpPage() {
 
   return (
     <>
-      {/* <h2 className="signup-title">Let's create your account</h2>
-      <p className="signup-text">
-        Setting up your account is quick and completely free. No obligations or
-        long-term contracts involved.
-      </p> */}
       <div className="signup-container">
-        <h2 className="signup-title">Sign Up</h2>
-        <form onSubmit={handleSubmit} noValidate method="POST">
-          <div className="form-group">
-            <label className="form-label">Name</label>
-            <input
-              type="text"
-              name="name"
-              aria-label="Enter your name"
-              value={formData.name}
-              placeholder="e.g. John Doe"
-              onChange={handleChange}
-              className="form-input"
-            />
-            <FaUser />
-          </div>
-          <div className="form-group">
-            <label className="form-label">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              aria-label="Enter your email."
-              placeholder="example@gmail.com"
-              onChange={handleChange}
-              className="form-input"
-            />
-            <MdEmail />
-          </div>
-          <div className="form-group">
-            <label className="form-label">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              aria-label="Enter your password."
-              placeholder="password"
-              onChange={handleChange}
-              className="form-input"
-            />
-            <FaLock />
-          </div>
-
-          <div className="form-group">
-            <label className="form-terms">
+        <div className="signup-form-container">
+          <h2 className="signup-title">Sign Up</h2>
+          <form onSubmit={handleSubmit} noValidate method="POST">
+            <div className="form-group">
+              <label className="form-label">Name</label>
               <input
-                type="checkbox"
-                name="acceptedTerms"
-                aria-label="Click to agree to the terms and conditions"
-                checked={formData.acceptedTerms}
+                type="text"
+                name="name"
+                aria-label="Enter your name"
+                value={formData.name}
+                placeholder="e.g. John Doe"
                 onChange={handleChange}
-                className="form-checkbox"
+                className="form-input"
               />
-              <p>
-                I agree to the <a href="#">terms and conditions</a>{" "}
-              </p>
-            </label>
+              <FaUser className="form-icon" />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                aria-label="Enter your email."
+                placeholder="example@gmail.com"
+                onChange={handleChange}
+                className="form-input"
+              />
+              <MdEmail className="form-icon" />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                aria-label="Enter your password."
+                placeholder="password"
+                onChange={handleChange}
+                className="form-input"
+              />
+              <FaLock className="form-icon" />
+            </div>
+
+            <div className="">
+              <label className="terms-conditions">
+                <input
+                  type="checkbox"
+                  name="acceptedTerms"
+                  aria-label="Click to agree to the terms and conditions"
+                  checked={formData.acceptedTerms}
+                  onChange={handleChange}
+                  className="form-checkbox"
+                />
+                <p>
+                  I agree to the <a href="#">terms and conditions</a>{" "}
+                </p>
+              </label>
+            </div>
+
+            <button type="submit" className="signup-button">
+              Sign Up
+            </button>
+          </form>
+
+          <div className="register-link">
+            <p>
+              Already have an account?
+              <Link to="/login">Login</Link>
+            </p>
           </div>
 
-          <button type="submit" className="signup-button">
-            Sign Up
-          </button>
-        </form>
-
-        <div className="register-link">
-          <p>
-            Already have an account?
-            <Link to="/login">Login</Link>
-          </p>
+          {message && (
+            <p
+              className={
+                message.includes("successful")
+                  ? "success-message"
+                  : "error-message"
+              }
+            >
+              {message}
+            </p>
+          )}
         </div>
-
-        {message && (
-          <p
-            className={
-              message.includes("successful")
-                ? "success-message"
-                : "error-message"
-            }
-          >
-            {message}
-          </p>
-        )}
       </div>
+
       <div className="terms-container"></div>
     </>
   );

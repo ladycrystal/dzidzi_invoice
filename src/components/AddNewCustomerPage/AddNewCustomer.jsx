@@ -10,8 +10,18 @@ function AddNewCustomer() {
   const handleSave = () => {
     // Save customer logic here (e.g., API call)
     console.log("Customer Saved:", { customerName, email, phone });
-    navigate("/"); // Navigate back to the invoice page
+    if (customerName && email && phone) {
+      navigate("/addnewinvoice", {
+        state: { newCustomer: { customerName, email, phone } },
+      }); // Navigate back to the invoice page and Pass the new customer back
+    } else {
+      alert("Please fill in all fields.");
+    }
   };
+
+  function NewCustomerDetails(e) {
+    return setCustomerName(e.target.value);
+  }
 
   return (
     <div className="new-customer-container">
@@ -22,7 +32,7 @@ function AddNewCustomer() {
           <input
             type="text"
             value={customerName}
-            onChange={(e) => setCustomerName(e.target.value)}
+            onChange={NewCustomerDetails}
             placeholder="Enter customer name"
           />
         </div>

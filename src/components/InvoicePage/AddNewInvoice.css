@@ -246,3 +246,25 @@ span {
   border-radius: 4px;
   background-color: #fff;
 }
+
+.customer-details {
+  display: flex;
+  justify-content: space-between; /* Pushes children to the far ends */
+  align-items: flex-start; /* Aligns them at the top */
+  width: 100%;
+  position: relative;
+}
+
+.customer-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 5px;
+}
+
+vr {
+  border: 1px dashed black;
+  height: 16px;
+  width: 2px;
+  /* box-shadow: 2px 0px 0 0px black; */
+  background-color: #ddd;
+}

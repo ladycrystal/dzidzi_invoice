@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./AddNewInvoice.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function AddNewInvoice() {
   // State for Add Customer dropdown
@@ -14,13 +14,15 @@ function AddNewInvoice() {
   const [serviceDate, setServiceDate] = useState(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleCustomerChange = (e) => {
     const value = e.target.value;
     if (value === "new") {
-      navigate("/new-customer"); // Navigate to the "New Customer" page
+      setCustomer(""); // Reset customer selection
+      navigate("/addnewcustomer"); // Navigate to the "New Customer" page
     } else {
-      setCustomer(value);
+      setCustomer({ name: value }); // Update customer with selected name
     }
   };
 
@@ -40,6 +42,12 @@ function AddNewInvoice() {
     }
   }
 
+  React.useEffect(() => {
+    if (location.state?.newCustomer) {
+      setCustomer(location.state.newCustomer); // Update customer state with all details from NewCustomer
+    }
+  }, [location.state]);
+
   return (
     <div className="invoice-container">
       <header className="invoice-header">
@@ -53,13 +61,41 @@ function AddNewInvoice() {
       <div className="details-container">
         <section className="invoice-details">
           <h2>Details</h2>
+
           <form className="details-form">
-            <div className="form-group">
-              <label htmlFor="customer">Add Customer</label>
+            {customer ? (
+              <div className="form-group">
+                <label htmlFor="customer">Add Customer</label>
+                <div className="customer-details">
+                  <div className="customer-details-container">
+                    <p className="customer-name">{customer.name}</p>
+                    <p className="customer-email">{customer.email}</p>
+                    <p className="customer-phone">{customer.phone}</p>
+                  </div>
+                  <div className="customer-actions">
+                    <p
+                      className="view-details"
+                      onClick={() =>
+                        alert(`Viewing details for ${customer.name}`)
+                      }
+                    >
+                      <a href="">View Details </a>
+                    </p>
+                    <vr />
+                    <p
+                      className="remove-details"
+                      onClick={() => setCustomer("")}
+                    >
+                      Remove
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : (
               <select
                 id="customer"
                 value={customer}
-                onChange={SelectedCustomer}
+                onChange={handleCustomerChange}
                 className="dropdown"
               >
                 <option value="">Select a customer</option>
@@ -70,7 +106,7 @@ function AddNewInvoice() {
                 ))}
                 <option value="new">+ Create New Customer</option>
               </select>
-            </div>
+            )}
 
             <div className="form-group">
               <label>Invoice Title</label>
