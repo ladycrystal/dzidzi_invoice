@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./SignUpPage.css";
 import { FaUser, FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -13,6 +13,7 @@ function SignUpPage() {
   });
 
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,6 +37,7 @@ function SignUpPage() {
     }
 
     setMessage("Signup successful!");
+    navigate("/login");
     setFormData({ name: "", email: "", password: "", acceptedTerms: false }); // Reset form
   };
 
@@ -55,6 +57,7 @@ function SignUpPage() {
                 placeholder="e.g. John Doe"
                 onChange={handleChange}
                 className="form-input"
+                required
               />
               <FaUser className="form-icon" />
             </div>
@@ -68,6 +71,7 @@ function SignUpPage() {
                 placeholder="example@gmail.com"
                 onChange={handleChange}
                 className="form-input"
+                required
               />
               <MdEmail className="form-icon" />
             </div>
@@ -81,6 +85,7 @@ function SignUpPage() {
                 placeholder="password"
                 onChange={handleChange}
                 className="form-input"
+                required
               />
               <FaLock className="form-icon" />
             </div>
@@ -94,6 +99,7 @@ function SignUpPage() {
                   checked={formData.acceptedTerms}
                   onChange={handleChange}
                   className="form-checkbox"
+                  required
                 />
                 <p>
                   I agree to the <a href="#">terms and conditions</a>{" "}

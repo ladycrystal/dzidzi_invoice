@@ -12,3 +12,27 @@ body {
   align-items: center;
   min-height: 100vh;
 }
+
+body.auth {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+  background: linear-gradient(to right, #4a90e2, #7b4397); /* Gradient */
+  /* overflow: hidden; */
+}
+
+body.auth::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit; /* Dark overlay */
+  z-index: -1;
+  filter: blur(8px);
+}

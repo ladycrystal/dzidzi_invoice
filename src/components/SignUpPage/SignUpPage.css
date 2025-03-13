@@ -1,7 +1,7 @@
 .signup-container {
   position: relative;
   width: 420px;
-  height: 450px;
+  min-height: 450px;
   margin: auto;
   border: 1px solid #ccc;
   border-radius: 10px;

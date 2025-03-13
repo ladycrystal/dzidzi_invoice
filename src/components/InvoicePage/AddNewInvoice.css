@@ -1,12 +1,17 @@
-body {
+/* body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f9f9f9;
-}
+  background-color: white;  Set it to a solid color 
+  width: 100vw;
+  height: 100vh; /* Ensure it covers the full viewport 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
 
 .invoice-container {
-  /* max-width: 1200px; */
+  max-width: 1200px;
   margin: 20px auto;
   background: #f7f7f7;
   border-radius: 8px;
@@ -17,6 +22,16 @@ body {
   width: 100%;
 }
 
+/* .invoice-container {
+  max-width: 100vw;  Take full width 
+  min-height: 100vh;  Cover full screen 
+  margin: 0;
+  background: white;  Ensure background matches 
+  border-radius: 0;  Remove rounding for a full-page effect 
+  box-shadow: none; /* Remove unnecessary shadows 
+  padding: 20px;
+} */
+
 .invoice-header {
   display: flex;
   /* justify-content: space-between; */
@@ -24,7 +39,7 @@ body {
   margin-bottom: 20px;
   width: 100%;
   background-color: #ffffff;
-  height: 10vh;
+  min-height: 10vh;
   padding: 15px;
 }
 
@@ -65,6 +80,25 @@ body {
 .invoice-details h2 {
   font-size: 20px;
   padding: 5px 10px;
+  margin-bottom: 7px;
+}
+
+.add-customer {
+  padding: 5px 4px;
+}
+
+.customer-details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-bottom: 1px dashed rgb(129, 111, 111);
+  margin-top: -12px;
+  padding: 5px;
+}
+
+.remove-details:hover {
+  color: red;
+  cursor: pointer;
 }
 
 .details-form .form-group {
@@ -108,6 +142,39 @@ body {
   padding-left: 5px;
 }
 
+.newinvoice-addcustomer {
+  padding: 4px;
+}
+
+.newinvoice-addcustomer select {
+  width: 100%;
+  padding: 8px;
+  border: 1px thin #ccc !important;
+  border-radius: 40px !important;
+  min-height: 50px;
+  box-sizing: border-box;
+  box-shadow: 0px 1px 3px 0px #ccc !important;
+  background-color: transparent;
+}
+
+/* invoice title */
+.addnewinvoice-title {
+  margin-top: 12px;
+  padding: 5px;
+  margin-bottom: 3px;
+}
+
+.addnewinvoice-title input {
+  width: 100%;
+  padding: 8px;
+  border: 1px thin #ccc !important;
+  border-radius: 40px !important;
+  min-height: 50px;
+  box-sizing: border-box;
+  box-shadow: 0px 1px 3px 0px #ccc !important;
+  background-color: transparent;
+}
+
 hr {
   margin: 15px 30px;
   height: 6px;
@@ -134,18 +201,19 @@ hr {
   border-radius: 4px;
 }
 
-.items-list {
+/* .items-list-flex-container {
   display: flex;
-  justify-content: space-between; /* Pushes children to the far ends */
-  align-items: flex-start; /* Aligns them at the top */
+  justify-content: space-between; /* Pushes children to the far ends 
+  align-items: flex-start; /* Aligns them at the top 
   width: 100%;
   position: relative;
   flex-direction: column;
-}
+} */
 
+/* discount aside */
 .totals {
   margin-left: auto; /* Pushes it to the right */
-  margin-top: 10px;
+  /* margin-top: 25px !important; */
   border: 1px solid rgba(19, 1, 1, 0.559);
   padding: 10px;
   border-radius: 10px;
@@ -219,12 +287,65 @@ span {
 }
 
 /* styling dropdown and date picker */
-.dropdown {
+/* General styling for the dropdown */
+.addnewinvoice-dropdown {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
+  font-size: 16px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #fff;
+  border-radius: 40px !important;
+  min-height: 50px;
+  outline: none;
+  cursor: pointer;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  background: transparent;
+}
+
+/* Focus effect on dropdown */
+.addnewinvoice-dropdown:focus {
+  border-color: #0066ff;
+  box-shadow: 0 0 3px rgba(0, 102, 255, 0.5);
+}
+
+/* Dropdown options */
+.addnewinvoice-dropdown option {
+  padding: 20px;
+  font-size: 16px;
+  background-color: white;
+  color: rgb(99, 95, 95);
+}
+
+/* Hover effect on options */
+.addnewinvoice-dropdown option:hover {
+  background-color: #eaf2ff; /* Light blue */
+}
+
+/* Styling for "Create New Customer" option */
+.addnewinvoice-dropdown option[value="new"] {
+  font-weight: bold;
+  background-color: #f0f8ff; /* Light blue background */
+  padding-left: 10px;
+}
+
+/* Styling for "Create New Customer +" sign */
+.addnewinvoice-dropdown span {
+  font-weight: bold;
+  background-color: red; /* Light blue background */
+  padding: 10px;
+  border: 1px solid grey;
+}
+
+/* Hover effect for "Create New Customer" */
+.addnewinvoice-dropdown option[value="new"]:hover {
+  background-color: #d0e3ff; /* Darker blue */
+}
+
+/* Divider line */
+.addnewinvoice-dropdown-bar {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 5px 0;
 }
 
 .new-customer-form {
@@ -239,12 +360,205 @@ span {
   border-radius: 4px;
 }
 
+.addnewinvoice-form-row {
+  display: flex;
+  gap: 12px;
+}
+
+/* service date and invoice ID */
+.addnewinvoice-form-row .addnewinvoice-form-group {
+  border-radius: 8px;
+  padding: 5px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+/* message textarea */
+.addnewinvoice-form-group {
+  border-radius: 8px;
+  padding: 5px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.addnewinvoice-form-group textarea {
+  width: 100% !important;
+  padding: 8px !important;
+  border: 1px solid #ccc !important;
+  min-height: 50px !important;
+  box-sizing: border-box !important;
+  box-shadow: 0px 1px 3px 0px #ccc !important;
+  background-color: transparent !important;
+  margin-top: 3px;
+  border-radius: 5px !important;
+}
+
+.addnewinvoice-form-group textarea::placeholder {
+  padding-left: 5px;
+  font-size: 16px !important;
+}
+
+.service-date {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.addnewinvoice-form-row .addnewinvoice-form-group input {
+  box-shadow: 0px 1px 3px 0px #ccc !important;
+}
+
+.invoice-id {
+  height: 50px !important;
+}
+
 .datepicker-input {
   width: 100%;
   padding: 8px;
+  border: 1px solid #ccc !important;
+  border-radius: 40px !important;
+  min-height: 50px;
+  box-sizing: border-box !important;
+  box-shadow: 0px 1px 3px 0px #ccc !important;
+  background-color: transparent !important;
+}
+
+/* Change the background and text color of the input field */
+.react-datepicker__input-container input {
+  background-color: #f4f4f4;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #fff;
+  padding: 8px 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+}
+
+/* Style the popup calendar */
+.react-datepicker {
+  font-family: Arial, sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+
+/* Style the header (month & year section) */
+.react-datepicker__header {
+  background-color: #007bff;
+  color: rgba(4, 1, 0, 0.879);
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Change the color of selected date */
+.react-datepicker__day--selected {
+  background-color: #007bff !important;
+  color: white !important;
+  border-radius: 50%;
+}
+
+/* Style hovered date */
+.react-datepicker__day:hover {
+  background-color: #0056b3;
+  color: white;
+  border-radius: 50%;
+}
+
+/* Change the color of today’s date */
+.react-datepicker__day--today {
+  font-weight: bold;
+  color: #d9534f;
+}
+
+/* *
+line items
+*/
+.line-items {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.line-items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.toggle-arrow {
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+.toggle-arrow.down {
+  transform: rotate(180deg);
+}
+
+/* Table Styling */
+.line-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.line-items-table th,
+.line-items-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.line-items-table th {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Input Fields */
+.item-name,
+.item-qty,
+.item-price {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.item-qty,
+.item-price {
+  width: 80px;
+}
+
+/* Readonly Item Name */
+.item-name {
+  background: #f9f9f9;
+}
+
+/* Total Column */
+.item-total {
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Delete Button */
+.delete-item {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Add Item Input */
+.add-item-input {
+  width: 100%;
+  padding: 8px;
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  text-align: left;
+  font-size: 14px;
 }
 
 .customer-details {

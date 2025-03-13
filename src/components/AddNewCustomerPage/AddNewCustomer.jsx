@@ -8,12 +8,13 @@ function AddNewCustomer() {
   const navigate = useNavigate();
 
   const handleSave = () => {
-    // Save customer logic here (e.g., API call)
+    // Save customer logic here
     console.log("Customer Saved:", { customerName, email, phone });
+
     if (customerName && email && phone) {
       navigate("/addnewinvoice", {
         state: { newCustomer: { customerName, email, phone } },
-      }); // Navigate back to the invoice page and Pass the new customer back
+      }); // Information of the new customer added is passed to the AddNewInvoice component using state.  This will be accessed on that component using location. AddNewInvoice line 46-50
     } else {
       alert("Please fill in all fields.");
     }
