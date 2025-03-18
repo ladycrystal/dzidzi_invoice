@@ -1,10 +1,18 @@
 import React, { useState } from "react";
+import NavBar from "../NavBar/NavBar";
+import Footer from "../Footer/Footer";
+import DashboardScreen from "../screens/Dashboard/DashboardScreen";
+import "../screens/Dashboard/Dashboard.css";
 
 function Home() {
   return (
-    <div>
-      <h1>Welcome to the home page</h1>
-    </div>
+    <>
+      <NavBar />
+      <div className="dashboard-container">
+        <DashboardScreen />
+      </div>
+      <Footer />
+    </>
   );
 }
 
