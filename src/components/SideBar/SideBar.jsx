@@ -1,5 +1,6 @@
 import React from "react";
 import "./SideBar.css";
+import { Link } from "react-router-dom";
 
 const SideBar = ({ isSideBar, isHomePage, toggleSideBar }) => {
   return (
@@ -16,10 +17,18 @@ const SideBar = ({ isSideBar, isHomePage, toggleSideBar }) => {
       >
         <div className="sidebar-container">
           <ul className="ul-container">
-            <li className="sidebar-list">Home</li>
-            <li className="sidebar-list">Invoices</li>
-            <li className="sidebar-list">Reports</li>
-            <li className="sidebar-list">Settings</li>
+            <li className="sidebar-list">
+              <Link to="/home">Home</Link>
+            </li>
+            <li className="sidebar-list">
+              <Link to="/invoice">Invoices</Link>
+            </li>
+            <li className="sidebar-list">
+              <Link to="/reports">Reports</Link>
+            </li>
+            <li className="sidebar-list">
+              <Link to="/settings">Settings</Link>
+            </li>
           </ul>
         </div>
       </section>

@@ -1,5 +1,5 @@
 .dashboard-container {
-  margin: 40px;
+  margin: 60px 10px;
 }
 .dashboard-container h3 {
   display: flex;
@@ -15,14 +15,15 @@
 .overview p {
   font-size: 20px;
   font-weight: 600;
+  padding-left: 10px;
+  margin-bottom: -10px;
 }
 
 .overview ul {
-  margin-left: 30px;
+  margin-left: 10px;
   margin-top: 7px;
   padding-top: 15px;
   padding-left: 7px;
-
   padding-bottom: 15px;
   list-style: none;
   background-color: #f7f5f5;

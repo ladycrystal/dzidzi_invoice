@@ -4,10 +4,10 @@ import LoginPage from "./components/LoginPage/LoginPage";
 import SignUpPage from "./components/SignUpPage/SignUpPage";
 import Home from "./components/HomePage/Home";
 import NotFound from "./components/HomePage/NotFound";
-import InvoicePage from "./components/InvoicePage/InvoicePage";
-import AddNewInvoice from "./components/InvoicePage/AddNewInvoice";
-import AddNewCustomer from "./components/AddNewCustomerPage/AddNewCustomer";
-import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
+import InvoiceScreen from "./components/screens/Invoice/InvoiceScreen";
+import ReportScreen from "./components/screens/Reports/ReportScreen";
+import SettingScreen from "./components/screens/settings/SettingScreen";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function App() {
   /**
@@ -40,9 +40,9 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/invoice" element={<InvoicePage />} />
-        <Route path="/addnewinvoice" element={<AddNewInvoice />} />
-        <Route path="/addnewcustomer" element={<AddNewCustomer />} />
+        <Route path="/invoice" element={<InvoiceScreen />} />
+        <Route path="/reports" element={<ReportScreen />} />
+        <Route path="/settings" element={<SettingScreen />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

@@ -27,7 +27,7 @@ function LoginPage() {
     }
 
     setMessage("Login successful!");
-    navigate("/addnewinvoice"); // Navigate to the "add invoice" page
+    navigate("/home"); // Navigate to the "add invoice" page
     setFormData({ email: "", password: "" }); // Reset form
   };
 
