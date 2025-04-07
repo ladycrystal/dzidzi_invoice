@@ -1,13 +1,12 @@
 import React from "react";
 import NavBar from "../../NavBar/NavBar";
-import Footer from "../../Footer/Footer";
+import InvoicePage from "./InvoicePage/InvoicePage";
 
 const InvoiceScreen = () => {
   return (
     <>
       <NavBar />
-      <p>Here you can view and manage invoices.</p>
-      <Footer />
+      <InvoicePage />
     </>
   );
 };

@@ -1,7 +1,7 @@
 .signup-container {
   position: relative;
-  width: 420px;
-  min-height: 450px;
+  min-width: 45vw;
+  min-height: 10vh;
   margin: auto;
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -14,21 +14,36 @@
   width: 100%;
   padding: 40px;
 }
+
 .signup-title {
   text-align: center;
   font-size: 24px;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: anchor-center;
+  min-width: 30vw;
+  min-height: 30vh;
+}
+
 .form-group {
   position: relative;
-  width: 100%;
+  width: 80%;
   height: 50px;
   margin: 30px 0;
+  margin-top: 5px;
 }
 
 .form-label {
   display: block;
   margin-bottom: 5px;
+}
+
+.form-group-style {
+  display: flex;
+  align-items: center;
 }
 
 .form-input {
@@ -41,8 +56,12 @@
   background-color: white;
 }
 
+.terms-style {
+  margin-top: -10px;
+}
+
 .signup-button {
-  width: 100%;
+  width: 80%;
   padding: 10px;
   background-color: #3ea1d7d0;
   color: #fff;
@@ -63,6 +82,12 @@
 .error-message {
   margin-top: 10px;
   color: red;
+  width: 100%;
+  padding: 9px 13px;
+  /* border-radius: 0.5rem; */
+  position: relative;
+  bottom: -6px;
+  text-align: center;
 }
 
 .terms-conditions {
@@ -74,4 +99,58 @@
 
 .terms-conditions a:hover {
   color: blue;
+}
+
+.toggle-password-icon {
+  cursor: pointer;
+  color: #333;
+}
+
+.instructions {
+  font-size: 0.75rem;
+  border-radius: 0.5rem;
+  background: #000;
+  color: #fff;
+  padding: 0.5rem;
+  position: relative;
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+  width: 80%;
+  height: 10%;
+}
+
+.instructions > svg {
+  margin-right: 0.25rem;
+}
+
+.offscreen {
+  position: absolute;
+  left: -9999px;
+}
+
+.hide {
+  display: none;
+}
+
+.valid {
+  color: limegreen;
+  margin-left: 0.25rem;
+}
+
+.invalid {
+  color: red;
+  margin-left: 0.25rem;
+}
+
+.errmsg {
+  background-color: lightpink;
+  color: firebrick;
+  font-weight: bold;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  width: 25rem;
+  opacity: 0.7;
+  position: relative;
+  left: 5rem;
 }

@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./LoginPage.css";
-import { FaLock } from "react-icons/fa";
+import {
+  FaEye,
+  FaEyeSlash,
+  FaCheck,
+  FaTimes,
+  FaInfoCircle,
+} from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function LoginPage() {
   const [formData, setFormData] = useState({
@@ -18,17 +25,32 @@ function LoginPage() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await axios.post(
+        "https://invoiceapp-8ub4.onrender.com/api/v1/auth/token",
+        formData
+      );
+      console.log(response.data);
+
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        setMessage("Login successful!");
+        navigate("/home"); // Navigate to the "add invoice" page
+        setFormData({ email: "", password: "" }); // Reset form
+      } else {
+        setMessage("Invalid credentials. Please try again.");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setMessage("An error occured. Please try again");
+    }
 
     if (!formData.email || !formData.password) {
       setMessage("Both fields are required!");
       return;
     }
-
-    setMessage("Login successful!");
-    navigate("/home"); // Navigate to the "add invoice" page
-    setFormData({ email: "", password: "" }); // Reset form
   };
 
   return (
@@ -39,37 +61,50 @@ function LoginPage() {
             <h2 className="login-title">Login</h2>
             <div className="form-group">
               <label className="form-label">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="example@gmail.com"
-                className="form-input"
-                required
-              />
-              <MdEmail className="form-icon" />
+              <div className="form-group-style">
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="example@gmail.com"
+                  className="form-input"
+                  required
+                />
+                <MdEmail className="form-icon" />
+              </div>
             </div>
             <div className="form-group">
               <label className="form-label">Password</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                placeholder="Password"
-                onChange={handleChange}
-                className="form-input"
-                required
-              />
-              <FaLock className="form-icon" />
+              <div className="form-group-style">
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  placeholder="Password"
+                  onChange={handleChange}
+                  className="form-input"
+                  required
+                />
+                <FaEye className="form-icon" />
+              </div>
             </div>
 
             <div className="remember-forgot">
-              <label htmlFor="">
-                <input type="checkbox" name="" id="" className="" />
-                Remember me
-              </label>
-              <a href="">Forgot password?</a>
+              <div className="remember">
+                <input
+                  type="checkbox"
+                  name=""
+                  id="checkbox"
+                  className="remember-me"
+                />
+                <label htmlFor="checkbox">Remember me</label>
+              </div>
+              <div>
+                <a href="#" className="forgot-password">
+                  Forgot password?
+                </a>
+              </div>
             </div>
 
             <button type="submit" className="login-button">
@@ -83,18 +118,19 @@ function LoginPage() {
               </p>
             </div>
           </form>
+
+          {message && (
+            <p
+              className={
+                message.includes("successful")
+                  ? "success-message"
+                  : "error-message"
+              }
+            >
+              {message}
+            </p>
+          )}
         </div>
-        {message && (
-          <p
-            className={
-              message.includes("successful")
-                ? "success-message"
-                : "error-message"
-            }
-          >
-            {message}
-          </p>
-        )}
       </div>
     </>
   );

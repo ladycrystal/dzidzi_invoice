@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import "./InvoicePage.css";
+import AddNewInvoice from "../AddNewInvoice/AddNewInvoice";
+import { useNavigate, Link } from "react-router-dom";
+import { div } from "motion/react-client";
 
 const InvoicePage = () => {
   const [invoices, setInvoices] = useState([]); // State to store invoices
@@ -27,41 +30,27 @@ const InvoicePage = () => {
 
   return (
     <div className="invoice-container">
-      {/* Sidebar */}
-      <aside className="sidebar">
-        <h2>Invoices</h2>
-        <ul>
-          <li className="active">Overview</li>
-          <li>Projects</li>
-          <li>Invoices</li>
-          <li>Recurring series</li>
-          <li>Estimates</li>
-          <li>Reports</li>
-          <li>Apps</li>
-          <li>Settings</li>
-        </ul>
-      </aside>
-
       {/* Main Content */}
       <main className="invoice-main">
         <header className="invoice-header">
           <h2>Invoices</h2>
           <button className="btn create-btn" onClick={addInvoice}>
-            + Create Invoice
+            {/* <Link to="/addnewinvoice"> Create Invoice</Link> */} Create
+            Invoice
           </button>
         </header>
 
         {/* Display message if no invoices exist */}
         {invoices.length === 0 ? (
-          <p className="empty-state">
-            No invoices yet. Click "Create Invoice" to add one.
-          </p>
+          <div className="empty-state">
+            <p>No invoices yet. Click "Create Invoice" to add one.</p>
+          </div>
         ) : (
           <table className="invoice-table">
             <thead>
               <tr>
                 <th>Date</th>
-                <th>Title</th>
+                <th>Id</th>
                 <th>Status</th>
                 <th>Amount</th>
                 <th>Actions</th>

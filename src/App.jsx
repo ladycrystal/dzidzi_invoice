@@ -5,8 +5,9 @@ import SignUpPage from "./components/SignUpPage/SignUpPage";
 import Home from "./components/HomePage/Home";
 import NotFound from "./components/HomePage/NotFound";
 import InvoiceScreen from "./components/screens/Invoice/InvoiceScreen";
-import ReportScreen from "./components/screens/Reports/ReportScreen";
-import SettingScreen from "./components/screens/settings/SettingScreen";
+import SalariesScreen from "./components/screens/Salaries/SalariesScreen";
+import CustomersScreen from "./components/screens/customers/CustomersScreen";
+import AddNewInvoice from "./components/screens/Invoice/AddNewInvoice/AddNewInvoice";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
    * effects
    */
   useEffect(() => {
-    // adding login class to body
+    // adding login classname to body
     if (
       location.pathname.includes("login") ||
       location.pathname.includes("signup")
@@ -41,8 +42,9 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/home" element={<Home />} />
         <Route path="/invoice" element={<InvoiceScreen />} />
-        <Route path="/reports" element={<ReportScreen />} />
-        <Route path="/settings" element={<SettingScreen />} />
+        <Route path="/salaries" element={<SalariesScreen />} />
+        <Route path="/customers" element={<CustomersScreen />} />
+        <Route path="/addnewinvoice" element={<AddNewInvoice />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

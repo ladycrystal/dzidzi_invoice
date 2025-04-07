@@ -18,16 +18,16 @@ const SideBar = ({ isSideBar, isHomePage, toggleSideBar }) => {
         <div className="sidebar-container">
           <ul className="ul-container">
             <li className="sidebar-list">
-              <Link to="/home">Home</Link>
+              <Link to="/home">Dashboard</Link>
             </li>
             <li className="sidebar-list">
               <Link to="/invoice">Invoices</Link>
             </li>
             <li className="sidebar-list">
-              <Link to="/reports">Reports</Link>
+              <Link to="/salaries">Salaries</Link>
             </li>
             <li className="sidebar-list">
-              <Link to="/settings">Settings</Link>
+              <Link to="/settings">Customers</Link>
             </li>
           </ul>
         </div>
