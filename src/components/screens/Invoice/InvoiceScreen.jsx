@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from "../../NavBar/NavBar";
+import NavBar from "../../Pages/ReusableComponents/NavBar/NavBar";
 import InvoicePage from "./InvoicePage/InvoicePage";
 
 const InvoiceScreen = () => {

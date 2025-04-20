@@ -1,8 +1,8 @@
 .sidebar {
   position: fixed;
   left: -250px; /* Hide sidebar initially */
-  top: 15;
-  width: 250px;
+  top: 60px;
+  width: 225px;
   height: 100vh;
   background: #f7f5f5;
   color: black;

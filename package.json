@@ -5,6 +5,8 @@
   "dependencies": {
     "ajv-keywords": "^5.1.0",
     "axios": "^1.8.4",
+    "bootstrap": "^5.3.5",
+    "classnames": "^2.5.1",
     "cra-template": "1.2.0",
     "motion": "^12.5.0",
     "react": "^19.0.0",

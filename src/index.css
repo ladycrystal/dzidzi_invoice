@@ -4,12 +4,23 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+html,
 body {
   font-family: "Poppins", serif;
-  /* display: flex; */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  max-width: 100%;
+  box-sizing: border-box;
+  /* overflow: scroll; */
+}
+
+.body-container {
+  display: flex;
   justify-content: center;
-  /* align-items: center; */
-  min-height: 100vh;
+  align-items: center;
+  /* min-height: 100vh; */
 }
 
 body.auth {

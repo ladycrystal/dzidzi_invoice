@@ -1,0 +1,215 @@
+.signup-container {
+  position: relative;
+  max-width: 90vw;
+  min-height: 10vh;
+  margin: auto;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1); /* Slightly transparent glass effect */
+  backdrop-filter: blur(15px); /* Glassmorphism effect */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.signup-form-container {
+  max-width: 100%;
+  padding: 40px;
+}
+
+.signup-title {
+  text-align: center;
+  font-size: 24px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: anchor-center;
+  min-width: 30rem;
+  min-height: 30rem;
+}
+
+.form-group {
+  position: relative;
+  width: 20vw;
+  height: 50px;
+  margin: 30px 0;
+  margin-top: 5px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group-style {
+  display: flex;
+  align-items: center;
+}
+
+/* for styling address page */
+.form-group-style-address {
+  width: 60vw;
+}
+
+/* for styling address page */
+.address-form-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 100vw;
+  max-height: 80vh;
+  margin: 20px 0;
+  padding: 0;
+  position: absolute;
+  top: 55px;
+  bottom: 55;
+  left: 10vw;
+  right: 0px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  box-shadow: 0px 1px 3px 0px #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  color: black;
+  border: 2px solid #ccc;
+  height: 75%;
+}
+
+.form-icon {
+  position: absolute;
+  right: 20px;
+  font-size: 16px;
+}
+
+.terms-conditions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 11px;
+  margin: 5px 0 0px 2px;
+}
+
+.form-checkbox {
+  display: inline;
+  margin-top: -13px;
+}
+
+.terms-conditions a:hover {
+  color: green;
+}
+
+.terms-conditions a {
+  color: blue;
+}
+
+.signup-button {
+  width: 20vw;
+  padding: 10px;
+  margin: 7px 0;
+  background-color: #3ea1d7d0;
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.signup-button:disabled {
+  background-color: #b0b0b0; /* faded gray-blue */
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.signup-button:active:not(:disabled) {
+  transform: scale(0.96); /* creates a slight "press" effect */
+  background-color: #0056b3; /* optional darker shade on click */
+}
+
+.register-link {
+  font-size: 14.5px;
+  text-align: center;
+  margin: 5px 0;
+}
+
+.register-link p a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.success-message {
+  margin-top: 10px;
+  color: green;
+  background-color: lightgreen;
+  font-weight: bold;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  width: 50vw;
+  opacity: 0.7;
+  position: relative;
+  /* left: 1.4vw; */
+}
+
+.toggle-password-icon {
+  cursor: pointer;
+  color: #333;
+}
+
+.instructions {
+  font-size: 0.75rem;
+  border-radius: 0.5rem;
+  background: #000;
+  color: #fff;
+  /* padding: 0.5rem; */
+  position: relative;
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+  width: 80%;
+  height: 10%;
+}
+
+.instructions > svg {
+  margin-right: 0.25rem;
+}
+
+.offscreen {
+  position: absolute;
+  left: -9999px;
+}
+
+.hide {
+  display: none;
+}
+
+.valid {
+  color: limegreen;
+  margin-left: 0.25rem;
+}
+
+.invalid {
+  color: red;
+  margin-left: 0.25rem;
+}
+
+.errmsg {
+  background-color: lightpink;
+  color: firebrick;
+  font-weight: bold;
+  /* padding: 0.5rem;
+  margin-bottom: 0.5rem; */
+  text-align: center;
+  /* width: 35vw; */
+  opacity: 0.7;
+  position: relative;
+  /* left: 1.4vw; */
+}

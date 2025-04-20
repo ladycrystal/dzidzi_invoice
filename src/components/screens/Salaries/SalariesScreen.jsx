@@ -1,6 +1,6 @@
 import React from "react";
-import NavBar from "../../NavBar/NavBar";
-import Footer from "../../Footer/Footer";
+import NavBar from "../../Pages/ReusableComponents/NavBar/NavBar";
+import Footer from "../../Pages/Footer/Footer";
 
 const ReportScreen = () => {
   return (

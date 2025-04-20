@@ -1,6 +1,15 @@
+/* #root {
+  width: 100vw;
+  height: 90vw;
+} */
+
 .dashboard-container {
-  margin: 60px 10px;
+  position: relative;
+  top: 65px;
+  margin: 20px 10px;
+  /* min-width: ; */
 }
+
 .dashboard-container h3 {
   display: flex;
   justify-content: center;
