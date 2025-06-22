@@ -1,13 +1,14 @@
 import React from "react";
 
-function MessageBox({ refProp, message, isError = true }) {
+function MessageBox({ refProp, message, isError = true, style }) {
   return (
     <p
-      refProp={refProp}
+      ref={refProp}
       className={
         message ? (isError ? "errmsg" : "success-message") : "offscreen"
       }
       aria-live="assertive"
+      style={style}
     >
       {message}
     </p>
