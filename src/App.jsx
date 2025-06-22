@@ -2,17 +2,20 @@ import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./components/Pages/LoginPage/LoginPage";
 import SignUpPage from "./components/Pages/SignUpPage/SignUpPage";
-import Home from "./components/Pages/HomePage/Home";
+//import Home from "./components/Pages/HomePage/Home";
 import NotFound from "./components/Pages/HomePage/NotFound";
 import InvoiceScreen from "./components/screens/Invoice/InvoiceScreen";
 import SalariesScreen from "./components/screens/Salaries/SalariesScreen";
 import CustomersScreen from "./components/screens/customers/CustomersScreen";
-import AddNewInvoice from "./components/screens/Invoice/AddNewInvoice/AddNewInvoice";
+import InvoicePreview from "./components/screens/Invoice/AddNewInvoice/InvoicePreview";
+import MyInvoiceManagement from "./components/screens/Invoice/InvoicePage/InvoiceManagement";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./components/Pages/SignUpPage/SignUpPage.css";
 import "./components/Pages/LoginPage/LoginPage.css";
 import GetAddressForm from "./components/Pages/SignUpPage/GetAddressForm";
 import AddressPage from "./components/Pages/SignUpPage/AddressPage";
+import DashboardScreen from "./components/screens/Dashboard/DashboardScreen";
+import InvoiceForm from "./components/screens/Invoice/AddNewInvoice/InvoiceForm";
 
 function App() {
   /**
@@ -53,16 +56,18 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/" element={<Navigate to="/signup" />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={<DashboardScreen />} />
         <Route path="/invoice" element={<InvoiceScreen />} />
         <Route path="/salaries" element={<SalariesScreen />} />
         <Route path="/customers" element={<CustomersScreen />} />
-        <Route path="/addnewinvoice" element={<AddNewInvoice />} />
+        <Route path="/addnewinvoice" element={<InvoiceForm />} />
+        <Route path="/previewinvoice" element={<InvoicePreview />} />
         <Route path="/getaddress" element={<GetAddressForm />} />
         <Route path="/addresssettings" element={<AddressPage />} />
+        <Route path="/myinvoicemanagement" element={<MyInvoiceManagement />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

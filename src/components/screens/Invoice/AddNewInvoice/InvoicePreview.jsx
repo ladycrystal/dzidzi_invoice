@@ -1,5 +1,13 @@
-import React from "react";
-import { Box, Typography, Divider, Grid, Paper } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Box,
+  Typography,
+  Divider,
+  Grid,
+  Paper,
+  CircularProgress,
+  Alert,
+} from "@mui/material";
 import dayjs from "dayjs";
 import FormButton from "../../../Pages/ReusableComponents/FormButton";
 import API from "../../../../api/axios";
@@ -8,6 +16,10 @@ const InvoicePreview = ({ invoiceData }) => {
   // if (!invoiceData) {
   //   return <Typography>Loading invoice data...</Typography>;
   // }
+
+  const [loading, setLoading] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Use mock data if invoiceData is not provided
   const mockData = {
@@ -52,32 +64,76 @@ const InvoicePreview = ({ invoiceData }) => {
   const formattedEnd = dayjs(work_end_time).format("DD/MM/YYYY");
 
   const createInvoice = async (invoiceData) => {
+    setSuccessMsg("");
+    setErrorMsg("");
     try {
-      const response = await API.post("/invoices", invoiceData);
+      const response = await API.post("/api/v1/invoices", invoiceData);
       return response.data;
     } catch (error) {
-      console.error(
-        "Failed to create invoice:",
-        error.response || error.message
-      );
+      if (error.response) {
+        // Server responded with a status other than 2xx
+        setErrorMsg(
+          "Failed to send invoice: " +
+            (error.response.data?.message || "Unknown error from server")
+        );
+        console.error("API Error:", error.response.data);
+      } else if (error.request) {
+        // Request was made but no response received
+        console.error("No response:", error.request);
+        setErrorMsg("Failed to send invoice: No response from server");
+      } else {
+        // Something else happened
+        console.error("Error:", error.message);
+        setErrorMsg("Failed to send invoice: " + error.message);
+      }
       throw error;
     }
   };
 
   const handleSendInvoice = async () => {
+    setLoading(true);
+    setSuccessMsg("");
+    setErrorMsg("");
+    const invoiceData = {
+      VAT,
+      invoice_rows,
+      payment_date,
+      reference,
+      total_amount,
+      work_start_time,
+      work_end_time,
+    };
+
     try {
       const result = await createInvoice(invoiceData);
-      console.log("Invoice created successfully:", result);
-      // Optional: show success message or redirect
+      setSuccessMsg("Invoice created successfully!");
+      console.log("Invoice created:", result);
     } catch (error) {
-      // Handle errors (e.g., show error message)
-      console.error("Error sending invoice:", error);
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Invoice creation failed.";
+      setErrorMsg(message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
       <Box sx={{ p: 4 }}>
+        {/* Alert Messages */}
+        {successMsg && (
+          <Alert severity="success" sx={{ mb: 2 }}>
+            {successMsg}
+          </Alert>
+        )}
+        {errorMsg && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {errorMsg}
+          </Alert>
+        )}
+
         {/* Invoice header */}
         <Typography variant="h4" align="center" gutterBottom>
           INVOICE
@@ -178,18 +234,24 @@ const InvoicePreview = ({ invoiceData }) => {
           mb: 2,
           mt: 2,
         }}
-      >
-        <FormButton
-          onClick={handleSendInvoice}
-          type="submit"
-          variant="contained"
-          text="Send Invoice"
-          sx={{
-            px: 6,
-            py: 1.5,
-            fontSize: "1rem",
-          }}
-        />
+      ></Box>
+      {/* Loader */}
+      <Box display="flex" justifyContent="center" sx={{ mb: 2, mt: 2 }}>
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <FormButton
+            onClick={handleSendInvoice}
+            type="submit"
+            variant="contained"
+            text="Send Invoice"
+            sx={{
+              px: 6,
+              py: 1.5,
+              fontSize: "1rem",
+            }}
+          />
+        )}
       </Box>
     </>
   );

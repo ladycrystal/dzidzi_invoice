@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import TextInputField from "../ReusableComponents/TextInputField";
 import PasswordField from "../ReusableComponents/PasswordField";
-import InstructionNote from "../ReusableComponents/InstructionNote";
 import MessageBox from "../ReusableComponents/MessageBox";
 import FormButton from "../ReusableComponents/FormButton";
 import LoadingScreen from "../../screens/LoadingScreen";
@@ -9,23 +8,112 @@ import { FaUser, FaPhone } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../../../api/axios";
+import Typography from "@mui/material/Typography";
+
+import MuiCard from "@mui/material/Card";
+import { styled } from "@mui/material/styles";
+import {
+  Paper,
+  Stack,
+  Box,
+  Divider,
+  Button,
+  FormControlLabel,
+  Checkbox,
+  Grid,
+  FormHelperText,
+  Container,
+} from "@mui/material";
+import { GoogleIcon, FacebookIcon } from "../../utils/CustomIcons";
+
+const RootGrid = styled(Grid)(({ theme }) => ({
+  minHeight: "100vh",
+}));
+
+const StoryBox = styled(Box)(({ theme }) => ({
+  // background:
+  //   theme.palette.mode === "light"
+  //     ? "linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)"
+  //     : "linear-gradient(135deg, #263238 0%, #37474f 100%)",
+  color: theme.palette.getContrastText(theme.palette.background.paper),
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  padding: theme.spacing(4),
+}));
+
+const FormPaper = styled(Paper)(({ theme }) => ({
+  margin: "auto",
+  padding: theme.spacing(4),
+  maxWidth: 400,
+}));
+
+const Card = styled(MuiCard)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignSelf: "center",
+  width: "100%",
+  padding: theme.spacing(4),
+  gap: theme.spacing(2),
+  margin: "auto",
+  boxShadow:
+    "hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px",
+  [theme.breakpoints.up("sm")]: {
+    maxWidth: "500px",
+  },
+  ...theme.applyStyles("dark", {
+    boxShadow:
+      "hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px",
+  }),
+}));
+
+const SignUpContainer = styled(Stack)(({ theme }) => ({
+  height: "calc((1 - var(--template-frame-height, 0)) * 100dvh)",
+  minHeight: "100%",
+  padding: theme.spacing(2),
+  [theme.breakpoints.up("sm")]: {
+    padding: theme.spacing(4),
+  },
+  "&::before": {
+    content: '""',
+    display: "flex",
+    position: "absolute",
+    zIndex: -1,
+    inset: 0,
+    backgroundImage:
+      "radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))",
+    backgroundRepeat: "no-repeat",
+    ...theme.applyStyles("dark", {
+      backgroundImage:
+        "radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))",
+    }),
+  },
+}));
 
 //creating a regex to validate telephone, email, and password
 
 const TEL_REGEX = /^\+?[0-9]{1,4}[-\s]?[0-9]{3,4}[-\s]?[0-9]{3,4}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#%$]).{8,24}$/;
-const NAME_REGEX = /^[A-Za-z]+(?: [A-Za-z]+)?$/;
+const NAME_REGEX = /^[A-Za-z\u00C0-\u017F]+(?:[ '-][A-Za-z\u00C0-\u017F]+)*$/;
 
 function SignUpPage() {
   //setting focus on all user input when the component loads and one to focus on error
-  const userRef = useRef();
+  // Refs for individual input fields
+  const firstNameRef = useRef();
+  const lastNameRef = useRef();
+  const emailRef = useRef(); // You had userRef, let's make it specific for email or the first input
+  const telephoneRef = useRef();
+  const passwordRef = useRef();
+  const confirmPwdRef = useRef();
   const errRef = useRef();
 
   const [formData, setFormData] = useState({
-    name: "",
+    firstname: "",
+    lastname: "",
     email: "",
     password: "",
+    confirmPwd: "",
     telephone: "",
     acceptedTerms: false,
   });
@@ -33,94 +121,149 @@ function SignUpPage() {
   //state for password visibility toggle
   const [pwdVisibility, setPwdVisibility] = useState(false);
 
+  //input focus states
+  const [firstNameFocus, setFirstNameFocus] = useState(false);
+  const [lastNameFocus, setLastNameFocus] = useState(false);
+  const [emailFocus, setEmailFocus] = useState(false);
+  const [telFocus, setTelFocus] = useState(false);
+  const [pwdFocus, setPwdFocus] = useState(false);
+  const [confirmPwdFocus, setConfirmPwdFocus] = useState(false);
+
   //setting states to capture name validation and input focus
-  const [validName, setValidName] = useState(false);
-  const [userFocus, setUserFocus] = useState(false);
+  const [validFirstName, setValidFirstName] = useState(false);
+  const [validLastName, setValidLastName] = useState(false);
 
   //setting states to capture pwd validation and input focus
   const [validPwd, setValidPwd] = useState(false);
-  const [pwdFocus, setPwdFocus] = useState(false);
 
-  //setting states to capture tel validation and input focus
+  //state for confirmpassword visibility toggle
+  const [confirmPwdVisible, setConfirmPwdVisible] = useState(false); //controls toggle for confirmpwd
+  //setting states to capture confirmpwd validation
+  // const [confirmPwd, setConfirmPwd] = useState(""); //tracks the changes in the pwdfield
+  const [passwordsMatch, setPasswordsMatch] = useState(true); //check for matching passwords
+
+  //setting states to capture tel validation
   const [validTel, setValidTel] = useState(false);
-  const [telFocus, setTelFocus] = useState(false);
 
   //setting states to capture email validation and input focus
   const [validEmail, setValidEmail] = useState(false);
-  const [emailFocus, setEmailFocus] = useState(false);
 
   //state for error & success messages
   const [message, setMessage] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [fadeOut, setFadeOut] = useState(false);
 
   const navigate = useNavigate();
 
   //set the focus when the page loads
   useEffect(() => {
-    userRef.current.focus();
+    firstNameRef.current.focus(); // Set focus to the first name input
   }, []);
 
   //validate the respective fields
   useEffect(() => {
-    const result = NAME_REGEX.test(formData.name);
-    console.log(result);
-    console.log(formData.name);
-    setValidName(result);
-  }, [formData.name]);
+    const result = NAME_REGEX.test(formData.firstname);
+    console.log("First Name:", formData.firstname, "Valid:", result); // For debugging
+    setValidFirstName(result);
+  }, [formData.firstname]);
+
+  useEffect(() => {
+    const result = NAME_REGEX.test(formData.lastname);
+    console.log("Last Name:", formData.lastname, "Valid:", result); // For debugging
+    setValidLastName(result);
+  }, [formData.lastname]);
 
   useEffect(() => {
     const result = PWD_REGEX.test(formData.password);
-    console.log(result);
-    console.log(formData.password);
+    // console.log(result);
+    // console.log(formData.password);
     setValidPwd(result);
   }, [formData.password]);
 
   useEffect(() => {
+    // Only check for match if both fields have content
+    const match =
+      formData.password &&
+      formData.confirmPwd &&
+      formData.password === formData.confirmPwd;
+    setPasswordsMatch(match);
+  }, [formData.password, formData.confirmPwd]);
+
+  useEffect(() => {
     const result = TEL_REGEX.test(formData.telephone);
-    console.log(result);
-    console.log(formData.telephone);
+    // console.log(result);
+    // console.log(formData.telephone);
     setValidTel(result);
   }, [formData.telephone]);
 
   useEffect(() => {
     const result = EMAIL_REGEX.test(formData.email);
-    console.log(result);
-    console.log(formData.email);
+    // console.log(result);
+    // console.log(formData.email);
     setValidEmail(result);
   }, [formData.email]);
 
   useEffect(() => {
     setErrMsg("");
-  }, [formData.telephone, formData.email, formData.password]);
-
-  useEffect(() => {
-    setMessage("");
-  }, [formData]);
+  }, [
+    formData.email,
+    formData.password,
+    formData.firstname,
+    formData.lastname,
+    formData.telephone,
+  ]);
 
   //handles changes that happen on the form for the different types of form fields
   const handleChange = (e) => {
     const { name, value } = e.target; //extracts the name and value from the event
     const type = e.target.type; //checks the input type(eg.checkbox,text,pwd)
     const checked = e.target.checked; //applies to the checkbox
-    setFormData({ ...formData, [name]: type === "checkbox" ? checked : value }); //updates the state of the form
+    setFormData((formData) => ({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    })); //updates the state of the form
+
+    // setMessage("");
+    // setErrMsg("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const { firstname, lastname, email, password, confirmPwd, telephone } =
+      formData;
+
+    // 🔍 Log the values before checking for empty fields
+    console.log({
+      firstname,
+      lastname,
+      email,
+      password,
+      confirmPwd,
+      telephone,
+    });
+
+    // for confirmpwd
+    if (formData.password !== confirmPwd) {
+      console.log("Passwords do not match");
+      setErrMsg("Passwords do not match");
+      return;
+    }
 
     if (
-      !formData.name ||
+      !formData.firstname ||
+      !formData.lastname ||
+      !formData.telephone ||
       !formData.email ||
       !formData.password ||
-      !formData.telephone
+      !formData.confirmPwd
     ) {
+      console.log("All fields are required!");
       setErrMsg("All fields are required!");
       return;
     }
 
     if (!formData.acceptedTerms) {
+      console.log("You must accept the terms and conditions!");
       setErrMsg("You must accept the terms and conditions!");
       return;
     }
@@ -129,53 +272,56 @@ function SignUpPage() {
     const v1 = EMAIL_REGEX.test(formData.email);
     const v2 = PWD_REGEX.test(formData.password);
     const v3 = TEL_REGEX.test(formData.telephone);
-    if (!v1 || !v2 || !v3) {
+    const v4 = NAME_REGEX.test(formData.firstname); // New: validate firstname
+    const v5 = NAME_REGEX.test(formData.lastname);
+    if (!v1 || !v2 || !v3 || !v4 || !v5) {
+      // If any validation fails, log the error and set the error message
+      console.log("Invalid Entry");
       setErrMsg("Invalid Entry");
       return;
     }
-
+    console.log("All validations passed. Attempting API call.");
     setIsLoading(true);
 
     //format for backend receiving data
     const payload = JSON.stringify({
+      firstname: formData.firstname,
+      lastname: formData.lastname,
       email: formData.email,
-      firstname: formData.name,
-      lastname: " ",
       password: formData.password,
       telephone: formData.telephone,
     });
 
     try {
+      console.log("Sending payload:", payload);
+      console.log("Type of payload:", typeof payload);
       //  Send data to the signup endpoint
       const response = await API.post("/users", payload, {
         headers: {
           "Content-type": "application/json",
         },
+        timeout: 10000, // 10 seconds timeout
       });
-      setIsLoading(true);
+
       setMessage("Signup successful! Redirecting...");
 
-      setTimeout(() => {
-        setFadeOut(true); // Trigger fade out
-      }, 2000);
-
-      // Redirect to login page after 2 seconds
-      setTimeout(() => {
-        setIsLoading(false); // hide spinner
-        setFadeOut(false);
-        navigate("/getaddress");
-
-        setFormData({
-          name: "",
-          email: "",
-          password: "",
-          telephone: "",
-          acceptedTerms: false,
-        }); // Reset form
-      }, 2000);
+      setFormData({
+        firstname: "",
+        lastname: "",
+        email: "",
+        password: "",
+        confirmPwd: "",
+        telephone: "",
+        acceptedTerms: false,
+      }); // Reset form
+      setIsLoading(false); // Stop the loader
+      navigate("/login"); //now navigate
     } catch (error) {
       if (!error?.response) {
         setErrMsg("No Server Response");
+        console.log("No response from server:", error);
+      } else if (error.response?.status === 400) {
+        setErrMsg("Bad Request: Please check your input.");
       } else if (error.response?.status === 409) {
         setErrMsg("User with this email or phone number already exists.");
       } else if (error.response?.status === 401) {
@@ -184,13 +330,30 @@ function SignUpPage() {
         setErrMsg(
           "Forbidden: You do not have permission to access this resource."
         );
+      } else if (error.response?.status === 422) {
+        //  specific error check
+        console.error(
+          "Unprocessable Content Error:",
+          error.response.data.detail
+        );
+
+        // You can also try to display these details to the user
+        // For example, if detail is an array of objects like [{loc: ['body', 'firstname'], msg: 'field required'}, ...]
+        if (
+          error.response?.data?.detail &&
+          Array.isArray(error.response.data.detail)
+        ) {
+          const errorMessages = error.response.data.detail
+            .map((err) => err.msg)
+            .join(", ");
+          setErrMsg(`Registration failed: ${errorMessages}`);
+        } else {
+          setErrMsg("Registration Failed: Invalid data provided.");
+        }
       } else {
         setErrMsg("Registration Failed");
       }
-      console.error(
-        "Signup error:",
-        error?.response ? error.response?.data : error.message
-      );
+      console.error("Signup error details:", error);
       //  Only focus if the ref exists and is mounted
       if (errRef.current) {
         errRef.current.focus();
@@ -199,183 +362,427 @@ function SignUpPage() {
       setIsLoading(false); //always stops the loader
     }
   };
-
   return (
     <>
-      <div className="signup-container">
-        <div className="signup-form-container">
-          <h2 className="signup-title">Sign Up</h2>
-          {isLoading && <LoadingScreen fadeOut={fadeOut} />}
-          {errMsg ? (
-            <MessageBox refProp={errRef} message={errMsg} isError={true} />
-          ) : message ? (
-            <MessageBox message={message} isError={false} />
-          ) : null}
+      <SignUpContainer>
+        <Container maxWidth="lg" sx={{ py: 4 }}>
+          <RootGrid
+            container
+            direction={{ xs: "column", md: "row" }}
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}
+          >
+            {/* LEFT: User Story / Illustration */}
 
-          <form onSubmit={handleSubmit} noValidate method="POST">
-            <TextInputField
-              label="Full Name"
-              valid={validName}
-              type="text"
-              name="name"
-              id="name"
-              refProp={userRef}
-              autoComplete="off"
-              aria-describedby="namenote"
-              aria-label="Enter your name"
-              aria-invalid={validName ? "false" : "true"}
-              value={formData.name}
-              placeholder="e.g. John Doe"
-              onChange={handleChange}
-              onFocus={() => setUserFocus(true)}
-              onBlur={() => setUserFocus(false)}
-              required
-              focus={userFocus}
-              icon={FaUser}
-            />
+            <Grid
+              item
+              xs={12}
+              md={4}
+              component={StoryBox}
+              // push story below form on xs
+              order={{ xs: 2, md: 1, lg: 1 }}
+            >
+              <Typography variant="h3" gutterBottom>
+                Why Dzidzi Invoice?
+              </Typography>
+              <Typography variant="body1" paragraph>
+                • Manage orders, riders, and payments seamlessly. <br />
+                • Auto-notify riders on payment. <br />• Beautiful, responsive
+                interface.
+              </Typography>
+            </Grid>
 
-            <InstructionNote
-              value={formData.name}
-              noteid="namenote"
-              focus={userFocus}
-              condition={!validName}
-              notemessage={
-                <>
-                  Must be a valid name. <br />
-                  Only letters are allowed. <br />
-                  Symbols,digits,double spaces, trailing spaces are not allowed.
-                </>
-              }
-            />
+            {/* right: Form */}
 
-            <TextInputField
-              label="Email"
-              type="email"
-              name="email"
-              id="email"
-              valid={validEmail}
-              focus={emailFocus}
-              value={formData.email}
-              autoComplete="off"
-              aria-label="Enter your email."
-              placeholder="example@gmail.com"
-              onChange={handleChange}
-              onFocus={() => setEmailFocus(true)}
-              onBlur={() => setEmailFocus(false)}
-              refProp={userRef}
-              aria-invalid={validEmail ? "false" : "true"}
-              aria-describedby="uidnote"
-              className="form-input"
-              required
-              icon={MdEmail}
-            />
-            <InstructionNote
-              value={formData.email}
-              noteid="uidnote"
-              focus={emailFocus}
-              condition={!validEmail}
-              notemessage={
-                <>
-                  Must be a valid email format. <br />
-                  Example: user@example.com <br />
-                  Only letters, numbers, underscores, hyphens, and dots are
-                  allowed.
-                </>
-              }
-            />
-
-            <PasswordField
-              label="Password"
-              visible={pwdVisibility} //toggle type dynamically
-              name="password"
-              id="pwd"
-              value={formData.password}
-              valid={validPwd}
-              aria-label="Enter your password."
-              placeholder="password"
-              toggleVisibility={() => setPwdVisibility(!pwdVisibility)}
-              onChange={handleChange}
-              onFocus={() => setPwdFocus(true)}
-              onBlur={(e) => {
-                //  hide instructions if focus moves away from both input and eye-icon
-                if (
-                  !e.relatedTarget ||
-                  !e.relatedTarget.classList.contains("toggle-password-icon")
-                ) {
-                  setPwdFocus(false);
-                }
+            <Grid
+              item
+              xs={12}
+              md={8}
+              component={Box}
+              elevation={6}
+              square
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 4,
+                // mt: 5,
               }}
-              focus={pwdFocus}
-              aria-describedby="pwdnote"
-            />
+              order={{ xs: 1, md: 2, lg: 2 }}
+              // direction={{ xs: "column-reverse", md: "row" }}
+            >
+              <Box mt={-5}>
+                <Card variant="outlined" className="signup-form-container">
+                  <Typography
+                    component="h1"
+                    variant="h4"
+                    sx={{
+                      width: "100%",
+                      fontSize: "clamp(2rem, 10vw, 2.15rem)",
+                    }}
+                    align="center"
+                  >
+                    Signup
+                  </Typography>
 
-            <InstructionNote
-              noteid="pwdnote"
-              focus={pwdFocus}
-              condition={!validPwd}
-              message="8-24 characters. Must include uppercase, lowercase, number & special character (!@#%$)"
-            />
-            <TextInputField
-              label="Phone number"
-              type="tel"
-              id="tel"
-              valid={validTel}
-              name="telephone"
-              autoComplete="off"
-              aria-label="Enter your phone number"
-              value={formData.telephone}
-              placeholder="e.g. 44444444"
-              onChange={handleChange}
-              onFocus={() => setTelFocus(true)}
-              onBlur={() => setTelFocus(false)}
-              refProp={userRef}
-              aria-invalid={validTel ? "false" : "true"}
-              aria-describedby="telnote"
-              className="form-input"
-              required
-              icon={FaPhone}
-            />
-            <InstructionNote
-              noteid="telnote"
-              focus={telFocus}
-              condition={!validTel}
-              message="Must be at least 10 digits (numbers only)."
-            />
+                  {isLoading && <LoadingScreen />}
+                  {errMsg ? (
+                    <MessageBox
+                      refProp={errRef}
+                      message={errMsg}
+                      isError={true}
+                    />
+                  ) : message ? (
+                    <MessageBox message={message} isError={false} />
+                  ) : null}
 
-            <div className="terms-style">
-              <label htmlFor="checkbox" className="terms-conditions">
-                <input
-                  type="checkbox"
-                  name="acceptedTerms"
-                  id="checkbox"
-                  aria-label="Click to agree to the terms and conditions"
-                  checked={formData.acceptedTerms}
-                  onChange={handleChange}
-                  className="form-checkbox"
-                  required
-                />
-                <p>
-                  I agree to the <a href="#">terms and conditions</a>
-                </p>
-              </label>
-            </div>
+                  <Grid
+                    container
+                    component="form"
+                    onSubmit={handleSubmit}
+                    noValidate
+                    spacing={{ xs: 2, md: 3 }}
+                    xs={12}
+                    md={12}
+                    sx={{ width: "100%" }}
+                  >
+                    <Grid
+                      item
+                      xs={12}
+                      md={6}
+                      // sx={{ width: "40%" }}
+                    >
+                      <TextInputField
+                        id="firstname"
+                        label="First Name"
+                        type="text"
+                        name="firstname"
+                        value={formData.firstname}
+                        valid={validFirstName}
+                        onChange={handleChange}
+                        placeholder="John"
+                        icon={FaUser} // Or a suitable icon
+                        required
+                        refProp={firstNameRef} // Consider separate refs for better focus management, or adjust logic
+                        focus={firstNameFocus} // Adjust focus logic as needed for multiple fields
+                        onFocus={() => setFirstNameFocus(true)}
+                        onBlur={() => setFirstNameFocus(false)}
+                        error={
+                          !validFirstName &&
+                          firstNameFocus &&
+                          formData.firstname.length > 0
+                        } // Show error if invalid, focused, and not empty
+                      />
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      md={6}
+                      //  sx={{ width: "40%" }}
+                    >
+                      <TextInputField
+                        error={
+                          !validLastName &&
+                          lastNameFocus &&
+                          formData.lastname.length > 0
+                        } // Show error if invalid, focused, and not empty
+                        id="lastname"
+                        label="Last Name"
+                        type="text"
+                        name="lastname"
+                        value={formData.lastname}
+                        valid={validLastName}
+                        onChange={handleChange}
+                        placeholder="Doe"
+                        icon={FaUser} // Or a suitable icon
+                        required
+                        refProp={lastNameRef} // Consider separate refs for better focus management, or adjust logic
+                        focus={lastNameFocus} // Adjust focus logic as needed for multiple fields
+                        onFocus={() => setLastNameFocus(true)}
+                        onBlur={() => setLastNameFocus(false)}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid
+                    container
+                    //component="form"
+                    //onSubmit={handleSubmit}
+                    // noValidate
+                    spacing={{ xs: 2, md: 3 }}
+                    xs={12}
+                    md={12}
+                    sx={{ width: "100%" }}
+                    fullWidth
+                  >
+                    <Grid
+                      item
+                      xs={12}
+                      md={6}
+                      // sx={{ width: "40%" }}
+                    >
+                      <TextInputField
+                        error={
+                          !validTel && telFocus && formData.telephone.length > 0
+                        }
+                        id="telephone"
+                        label="Phone Number"
+                        type="tel"
+                        name="telephone"
+                        value={formData.telephone}
+                        valid={validTel}
+                        onChange={handleChange}
+                        placeholder="e.g.+1234567890"
+                        icon={FaPhone}
+                        required
+                        refProp={telephoneRef}
+                        focus={telFocus}
+                        onFocus={() => setTelFocus(true)}
+                        onBlur={() => setTelFocus(false)}
+                      />
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      md={6}
+                      // sx={{ width: "40%" }}
+                    >
+                      <TextInputField
+                        error={
+                          !validEmail && emailFocus && formData.email.length > 0
+                        }
+                        id="email"
+                        label="Email"
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        valid={validEmail}
+                        onChange={handleChange}
+                        placeholder="example@gmail.com"
+                        icon={MdEmail}
+                        required
+                        refProp={emailRef}
+                        focus={emailFocus}
+                        onFocus={() => setEmailFocus(true)}
+                        onBlur={() => setEmailFocus(false)}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid
+                    container
+                    // component="form"
+                    // onSubmit={handleSubmit}
+                    // noValidate
+                    spacing={{ xs: 2, md: 3 }}
+                    xs={12}
+                    md={6}
+                    sx={{ width: "100%" }}
+                    fullWidth
+                  >
+                    <Grid
+                      item
+                      xs={12}
+                      md={6}
+                      //sx={{ width: "40%" }}
+                    >
+                      <PasswordField
+                        refProp={passwordRef}
+                        type="password"
+                        label="Password"
+                        visible={pwdVisibility} //toggle type dynamically
+                        name="password"
+                        id="pwd"
+                        value={formData.password}
+                        valid={validPwd}
+                        aria-label="Enter your password."
+                        placeholder="Enter your password"
+                        toggleVisibility={() =>
+                          setPwdVisibility(!pwdVisibility)
+                        }
+                        onChange={handleChange}
+                        onFocus={() => setPwdFocus(true)}
+                        onBlur={(e) => {
+                          //  hide instructions if focus moves away from both input and eye-icon
+                          if (
+                            !e.relatedTarget ||
+                            !e.relatedTarget.classList.contains(
+                              "toggle-password-icon"
+                            )
+                          ) {
+                            setPwdFocus(false);
+                          }
+                        }}
+                        focus={pwdFocus}
+                        aria-describedby="pwdnote"
+                      />
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      md={6}
+                      //sx={{ width: "40%" }}
+                    >
+                      <PasswordField
+                        type="password"
+                        label="Confirm Password"
+                        // fullWidth
+                        visible={confirmPwdVisible}
+                        name="confirmPwd"
+                        id="confirmpwd"
+                        value={formData.confirmPwd}
+                        valid={
+                          passwordsMatch &&
+                          formData.confirmPwd.length > 0 &&
+                          validPwd
+                        } // It's valid if they match, not empty, AND the first password passes its own regex
+                        error={
+                          !passwordsMatch &&
+                          (formData.confirmPwd || "").length > 0 // Error if not matching AND has text
+                          //|| (confirmPwdFocus && formData.confirmPwd.length === 0) // OR error if focused and empty (optional: helps with "required" visual feedback)
+                        }
+                        onChange={handleChange}
+                        aria-label="Confirm password."
+                        placeholder="Re-enter password"
+                        inputSx={{
+                          paddingLeft: "12px",
+                          paddingRight: "12px",
+                          "&::placeholder": {
+                            color: "rgba(0, 0, 0, 0.5)",
+                            opacity: 1,
+                            fontStyle: "italic",
+                            paddingLeft: "8px",
+                          },
+                        }}
+                        labelSx={{
+                          paddingLeft: "4px",
+                          paddingRight: "4px",
+                        }}
+                        toggleVisibility={() =>
+                          setConfirmPwdVisible(!confirmPwdVisible)
+                        }
+                        refProp={confirmPwdRef}
+                        focus={confirmPwdFocus}
+                        onFocus={() => setConfirmPwdFocus(true)}
+                        onBlur={(e) => {
+                          if (!e.relatedTarget) {
+                            // Only hide if focus leaves the input entirely
+                            setConfirmPwdFocus(false);
+                          }
+                        }}
+                        aria-describedby="confirmpwdnote"
+                        showValidityIcon={true}
+                      />
+                      {confirmPwdFocus &&
+                        (formData.confirmPwd || "").length > 0 && (
+                          <FormHelperText
+                            sx={{
+                              color: passwordsMatch
+                                ? "success.main"
+                                : "error.main",
+                              marginTop: -1,
+                              marginBottom: 0.6,
+                            }}
+                          >
+                            {passwordsMatch
+                              ? "Passwords match"
+                              : "Passwords do not match"}
+                          </FormHelperText>
+                        )}
+                    </Grid>
+                  </Grid>
 
-            <FormButton
-              disabled={!validName || !validEmail || !validTel || !validPwd}
-              text="Sign Up"
-            />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginTop: "-30px",
+                    }}
+                  >
+                    <FormControlLabel
+                      sx={{
+                        "& .MuiFormControlLabel-label": {
+                          fontSize: "11px",
+                        },
+                      }}
+                      label={
+                        <>
+                          I agree to the&nbsp;
+                          <Link href="" target="_blank" rel="noopener">
+                            Terms and Conditions
+                          </Link>
+                        </>
+                      }
+                      control={
+                        <Checkbox
+                          sx={{
+                            transform: "scale(0.7)", // scales the checkbox down
+                            //padding: "4px",
+                          }}
+                          name="acceptedTerms"
+                          checked={formData.acceptedTerms}
+                          onChange={handleChange}
+                        />
+                      }
+                    />
+                  </Box>
 
-            <div className="register-link">
-              <p>
-                Already have an account?
-                <Link to="/login">Log In</Link>
-              </p>
-            </div>
-          </form>
-        </div>
-      </div>
+                  <FormButton
+                    onClick={handleSubmit}
+                    disabled={
+                      !validEmail ||
+                      !validPwd ||
+                      !validFirstName ||
+                      !validLastName ||
+                      !passwordsMatch ||
+                      !formData.acceptedTerms
+                    }
+                    text="Signup"
+                    type="submit"
+                    variant="contained"
+                  />
+                  {/* </Grid> */}
 
-      <div className="terms-container"></div>
+                  <Divider>
+                    <Typography sx={{ color: "text.secondary" }}>or</Typography>
+                  </Divider>
+                  <Box
+                    sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                  >
+                    <Button
+                      fullWidth
+                      variant="outlined"
+                      onClick={() => alert("Sign up with Google")}
+                      startIcon={<GoogleIcon />}
+                    >
+                      Sign up with Google
+                    </Button>
+                    <Button
+                      fullWidth
+                      variant="outlined"
+                      onClick={() => alert("Sign up with Facebook")}
+                      startIcon={<FacebookIcon />}
+                    >
+                      Sign up with Facebook
+                    </Button>
+                    <Box>
+                      <Typography sx={{ textAlign: "center" }}>
+                        Already have an account? {""}
+                        <Link to="/login" variant="body 2">
+                          Login
+                        </Link>
+                      </Typography>
+                    </Box>
+                  </Box>
+                  {/* </div> */}
+                </Card>
+              </Box>
+            </Grid>
+          </RootGrid>
+        </Container>
+        <div className="terms-container"></div>
+      </SignUpContainer>
     </>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./InvoicePage.css";
-import AddNewInvoice from "../AddNewInvoice/AddNewInvoice";
+//import InvoicePreview from "../AddNewInvoice/InvoicePreview";
 import { useNavigate, Link } from "react-router-dom";
 import { div } from "motion/react-client";
 
