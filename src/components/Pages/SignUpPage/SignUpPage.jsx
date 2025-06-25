@@ -163,20 +163,16 @@ function SignUpPage() {
   //validate the respective fields
   useEffect(() => {
     const result = NAME_REGEX.test(formData.firstname);
-    console.log("First Name:", formData.firstname, "Valid:", result); // For debugging
     setValidFirstName(result);
   }, [formData.firstname]);
 
   useEffect(() => {
     const result = NAME_REGEX.test(formData.lastname);
-    console.log("Last Name:", formData.lastname, "Valid:", result); // For debugging
     setValidLastName(result);
   }, [formData.lastname]);
 
   useEffect(() => {
     const result = PWD_REGEX.test(formData.password);
-    // console.log(result);
-    // console.log(formData.password);
     setValidPwd(result);
   }, [formData.password]);
 
@@ -191,15 +187,11 @@ function SignUpPage() {
 
   useEffect(() => {
     const result = TEL_REGEX.test(formData.telephone);
-    // console.log(result);
-    // console.log(formData.telephone);
     setValidTel(result);
   }, [formData.telephone]);
 
   useEffect(() => {
     const result = EMAIL_REGEX.test(formData.email);
-    // console.log(result);
-    // console.log(formData.email);
     setValidEmail(result);
   }, [formData.email]);
 
@@ -232,17 +224,10 @@ function SignUpPage() {
     const { firstname, lastname, email, password, confirmPwd, telephone } =
       formData;
 
-    // 🔍 Log non-sensitive values before checking for empty fields
-    console.log({
-      firstname,
-      lastname,
-      email,
-      telephone,
-    });
 
+   
     // for confirmpwd
     if (formData.password !== confirmPwd) {
-      console.log("Passwords do not match");
       setErrMsg("Passwords do not match");
       return;
     }
@@ -255,13 +240,11 @@ function SignUpPage() {
       !formData.password ||
       !formData.confirmPwd
     ) {
-      console.log("All fields are required!");
       setErrMsg("All fields are required!");
       return;
     }
 
     if (!formData.acceptedTerms) {
-      console.log("You must accept the terms and conditions!");
       setErrMsg("You must accept the terms and conditions!");
       return;
     }
@@ -274,11 +257,9 @@ function SignUpPage() {
     const v5 = NAME_REGEX.test(formData.lastname);
     if (!v1 || !v2 || !v3 || !v4 || !v5) {
       // If any validation fails, log the error and set the error message
-      console.log("Invalid Entry");
       setErrMsg("Invalid Entry");
       return;
     }
-    console.log("All validations passed. Attempting API call.");
     setIsLoading(true);
 
     //format for backend receiving data
@@ -291,8 +272,6 @@ function SignUpPage() {
     });
 
     try {
-      console.log("Sending payload:", payload);
-      console.log("Type of payload:", typeof payload);
       //  Send data to the signup endpoint
       const response = await API.post("/users", payload, {
         headers: {
