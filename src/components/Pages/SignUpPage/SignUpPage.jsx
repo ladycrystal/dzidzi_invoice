@@ -232,13 +232,11 @@ function SignUpPage() {
     const { firstname, lastname, email, password, confirmPwd, telephone } =
       formData;
 
-    // 🔍 Log the values before checking for empty fields
+    // 🔍 Log non-sensitive values before checking for empty fields
     console.log({
       firstname,
       lastname,
       email,
-      password,
-      confirmPwd,
       telephone,
     });
 
