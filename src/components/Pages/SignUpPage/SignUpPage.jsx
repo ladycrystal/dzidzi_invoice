@@ -224,6 +224,8 @@ function SignUpPage() {
     const { firstname, lastname, email, password, confirmPwd, telephone } =
       formData;
 
+
+   
     // for confirmpwd
     if (formData.password !== confirmPwd) {
       setErrMsg("Passwords do not match");
