@@ -1,8 +1,8 @@
 import React from "react";
-import NavBar from "../../Pages/ReusableComponents/NavBar/NavBar";
+import NavBar from "../../Pages/NavBar/NavBar";
 import Footer from "../../Pages/Footer/Footer";
 
-const ReportScreen = () => {
+const SalariesScreen = () => {
   return (
     <>
       <NavBar />
@@ -12,4 +12,4 @@ const ReportScreen = () => {
   );
 };
 
-export default ReportScreen;
+export default SalariesScreen;

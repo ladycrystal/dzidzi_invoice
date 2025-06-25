@@ -20,7 +20,7 @@ const SideBar = ({ isSideBar, isHomePage, toggleSideBar }) => {
         if (e.key === "Escape") toggleSideBar();
       }}
     >
-      <List>
+      <List sx={{ marginTop: 10 }}>
         {[
           { text: "Home", path: "/home" },
           { text: "Invoice", path: "/myinvoicemanagement" },

@@ -9,12 +9,13 @@ const FooterWrapper = styled(Box)(({ theme }) => ({
   color: theme.palette.primary.contrastText, // Text color contrasting with the background
   padding: theme.spacing(3.15, 2), // Vertical and horizontal padding
   marginTop: theme.spacing(6), // Add some space above the footer
-  width: "100%", // Ensure it takes full width
+  width: "100vw", // Ensure it takes full width
   boxSizing: "border-box", // Include padding in the element's total width and height
   borderTop: `1px solid ${theme.palette.divider}`,
   position: "relative", // Fix the footer at the bottom of the page
   bottom: 0, // Position it at the bottom
   right: 0, // Align to the right
+  left: 0,
 }));
 
 const StyledLink = styled(Link)(({ theme }) => ({

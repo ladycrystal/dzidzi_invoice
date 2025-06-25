@@ -19,8 +19,9 @@ import {
 import { styled } from "@mui/material/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility"; // For the View icon
 import API from "../../../../api/axios";
-import NavBar from "../../../Pages/ReusableComponents/NavBar/NavBar";
+import NavBar from "../../../Pages/NavBar/NavBar";
 import SideBar from "../../../Pages/SideBar/SideBar";
+import Footer from "../../../Pages/Footer/Footer";
 
 // --- Mock Data (Replace with actual API fetching) ---
 const MOCK_INVOICES = [
@@ -99,7 +100,7 @@ const MOCK_INVOICES = [
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
   borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[3],
+  boxShadow: theme.shadows[2],
   [theme.breakpoints.up("md")]: {
     padding: theme.spacing(4),
   },
@@ -268,7 +269,7 @@ const MyInvoiceManagement = ({ onToggleSidebar }) => {
           component="h1"
           gutterBottom
           align="center"
-          sx={{ mb: { xs: 3, md: 5 } }}
+          sx={{ mb: { xs: 3, md: 5 }, pt: { xs: "64px", sm: "64px" } }}
         >
           My Invoices
         </Typography>
@@ -379,6 +380,7 @@ const MyInvoiceManagement = ({ onToggleSidebar }) => {
         isHomePage={false} // Adjust this prop based on your SideBar's logic
         toggleSideBar={() => setShowSidebar((prev) => !prev)} // <--- Allows closing the sidebar from within
       />
+      <Footer />
     </>
   );
 };

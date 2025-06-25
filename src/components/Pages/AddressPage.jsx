@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import TextInputField from "../ReusableComponents/TextInputField";
-import useChangeHandler from "../../hooks/useChangeHandler";
-import API from "../../../api/axios";
-import MessageBox from "../ReusableComponents/MessageBox";
-import FormButton from "../ReusableComponents/FormButton";
-import NavBar from "../ReusableComponents/NavBar/NavBar";
-import SideBar from "../SideBar/SideBar";
+import Layout from "./Layout";
+import TextInputField from "../common/TextInputField";
+import useChangeHandler from "../../utils/hooks/useChangeHandler";
+import API from "../../api/axios";
+import MessageBox from "../common/MessageBox";
+import FormButton from "../common/FormButton";
 import { Grid, Container, Typography, Box } from "@mui/material";
-import Footer from "../Footer/Footer";
-import usePageNavigation from "../../hooks/PageNavigation/usePageNavigation";
+import usePageNavigation from "../../utils/hooks/PageNavigation/usePageNavigation";
 
 const AddressPage = ({ onToggleSideBar }) => {
   const { formData, setFormData, resetForm } = useChangeHandler({
@@ -27,7 +25,9 @@ const AddressPage = ({ onToggleSideBar }) => {
   const [errMsg, setErrMsg] = useState("");
   const [loading, setLoading] = useState(true);
   const [addressId, setAddressId] = useState(null);
-  const [showSidebar, setShowSidebar] = useState(false);
+
+  const capitalizeFirst = (str) =>
+    str ? str.trim().charAt(0).toUpperCase() + str.trim().slice(1) : "";
 
   const token = localStorage.getItem("token");
 
@@ -72,53 +72,54 @@ const AddressPage = ({ onToggleSideBar }) => {
   }, []);
 
   const handleChange = (e) => {
+    setMessage("");
+    setErrMsg("");
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Helper to build address data
+  const getAddressData = () => ({
+    street: formData.street,
+    city: formData.city,
+    postal_code: formData.postal_code,
+    country: formData.country,
+  });
+
+  // Helper to update address
+  const updateAddress = async (id, data) => {
+    const res = await API.put(`/addresses/${id}`, data);
+    if (res.status >= 200 && res.status < 300) {
+      setMessage("Address updated successfully.");
+    } else {
+      throw new Error("Failed to update address.");
+    }
+  };
+
+  // Helper to create address
+  const createAddress = async (data) => {
+    const res = await API.post("/addresses", data);
+    if (res.status >= 200 && res.status < 300) {
+      setAddressId(res.data.id);
+      setMessage("Address created successfully.");
+    } else {
+      throw new Error("Failed to create address.");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setMessage("");
     setErrMsg("");
     setLoading(true);
 
+    const addressData = getAddressData();
+
     try {
-      // 2. Update/Create Address Information
-      const addressData = {
-        street: formData.street,
-        city: formData.city,
-        postal_code: formData.postal_code,
-        country: formData.country,
-      };
-
-      console.log(
-        "Attempting address operation with ID:",
-        addressId,
-        "Data:",
-        addressData
-      );
-
-      let res;
       if (addressId) {
-        // If addressId exists, update the existing address
-        res = await API.put(`/addresses/${addressId}`, addressData);
-        if (res.status >= 200 && res.status < 300) {
-          setMessage("Address updated successfully.");
-        } else {
-          throw new Error("Failed to update address.");
-        }
+        await updateAddress(addressId, addressData);
       } else {
-        // If no addressId, create a new address
-        res = await API.post("/addresses", addressData);
-        console.log("Response from address creation:", res);
-        // Check if the response is successful
-        if (res.status >= 200 && res.status < 300) {
-          setAddressId(res.data.id);
-          setMessage("Address created successfully.");
-        } else {
-          throw new Error("Failed to create address.");
-        }
+        await createAddress(addressData);
       }
     } catch (error) {
       console.error(
@@ -138,20 +139,20 @@ const AddressPage = ({ onToggleSideBar }) => {
   // Add a console.log right before rendering the TextInputField
   console.log("Current formData.lastname before render:", formData.lastname);
   return (
-    <>
-      <NavBar
-        title=""
-        isSidebarOpen={showSidebar}
-        onToggleSidebar={() => setShowSidebar((prev) => !prev)}
-        SidebarComponent={SideBar}
-        showProfile={false}
-        showNotifications={false}
-        showSearch={false}
-        logoSrc=""
-      />
+    <Layout>
       <Container
-        maxWidth="xl"
-        sx={{ py: 3, display: "flex", justifyContent: "center" }}
+        maxWidth="lg"
+        sx={{
+          py: 3,
+          display: "flex",
+          justifyContent: "center",
+          pt: { xs: "56px", sm: "64px" },
+          width: "100%", // Ensure it doesn't exceed viewport width
+          // overflowX: "hidden",
+          boxSizing: "border-box",
+          // maxWidth: 1200,
+          margin: "0 auto",
+        }}
       >
         <form
           onSubmit={handleSubmit}
@@ -159,9 +160,10 @@ const AddressPage = ({ onToggleSideBar }) => {
           method="POST"
           style={{
             // height: "89vh",
-            width: "86.8vw",
-            // marginLeft: " 50px",
-            overflowX: "hidden",
+            width: "100%",
+            margin: "0 auto",
+            // overflowX: "hidden",
+            maxWidth: 900,
           }}
         >
           {errMsg ? (
@@ -171,14 +173,12 @@ const AddressPage = ({ onToggleSideBar }) => {
               isError={true}
               style={{
                 display: "block",
-                margin: "20px auto",
+                margin: "-25px auto 5px auto",
                 width: "100%",
                 maxWidth: 500,
                 textAlign: "center",
                 padding: "12px 24px",
                 borderRadius: "6px",
-                //  background: "#e6f4ea", // light green for success
-                // color: "#1b5e20",      // dark green text
                 fontWeight: 500,
               }}
             />
@@ -188,14 +188,12 @@ const AddressPage = ({ onToggleSideBar }) => {
               isError={false}
               style={{
                 display: "block",
-                margin: "20px auto",
+                margin: "-25px auto 5px auto",
                 width: "100%",
                 maxWidth: 500,
                 textAlign: "center",
                 padding: "12px 24px",
                 borderRadius: "6px",
-                //  background: "#e6f4ea", // light green for success
-                //  color: "#1b5e20",      // dark green text
                 fontWeight: 500,
               }}
             />
@@ -208,11 +206,8 @@ const AddressPage = ({ onToggleSideBar }) => {
             <Grid
               container
               spacing={{ xs: 2, md: 3 }}
-              xs={12}
-              md={12}
-              sx={{ width: "100%", paddingX: "20px" }}
-              fullWidth
-              className="mb-3"
+              sx={{ paddingX: "20px" }}
+              className="mb-3" //remove this after debugging
             >
               <Grid item xs={12} md={6} sx={{ width: "40%" }}>
                 <TextInputField
@@ -222,7 +217,7 @@ const AddressPage = ({ onToggleSideBar }) => {
                   id="firstname"
                   showValidationIcons={false}
                   type="text"
-                  value={formData.firstname.trim() || ""}
+                  value={capitalizeFirst(formData.firstname)}
                   refProp={userRef}
                   onChange={handleChange}
                   readOnly={true}
@@ -236,7 +231,7 @@ const AddressPage = ({ onToggleSideBar }) => {
                   id="lastname"
                   showValidationIcons={false}
                   type="text"
-                  value={formData.lastname.trim() || ""}
+                  value={capitalizeFirst(formData.lastname)}
                   refProp={userRef}
                   onChange={handleChange}
                   readOnly={true}
@@ -260,7 +255,7 @@ const AddressPage = ({ onToggleSideBar }) => {
                   name="email"
                   id="email"
                   type="email"
-                  value={formData.email.trim().toLowerCase() || ""}
+                  value={(formData.email || "").trim().toLowerCase()}
                   refProp={userRef}
                   onChange={handleChange}
                   readOnly={true}
@@ -305,7 +300,7 @@ const AddressPage = ({ onToggleSideBar }) => {
                   refProp={userRef}
                   autoComplete="off"
                   aria-label="Enter your city"
-                  value={formData.city.trim() || ""}
+                  value={capitalizeFirst(formData.city)}
                   onChange={handleChange}
                   // required
                 />
@@ -319,7 +314,7 @@ const AddressPage = ({ onToggleSideBar }) => {
                   id="country"
                   refProp={userRef}
                   autoComplete="off"
-                  value={formData.country.trim() || ""}
+                  value={capitalizeFirst(formData.country)}
                   onChange={handleChange}
                   // required
                 />
@@ -356,7 +351,7 @@ const AddressPage = ({ onToggleSideBar }) => {
                   id="street"
                   refProp={userRef}
                   autoComplete="off"
-                  value={formData?.street.trim() || ""}
+                  value={capitalizeFirst(formData.street)}
                   onChange={handleChange}
                 />
               </Grid>
@@ -378,15 +373,7 @@ const AddressPage = ({ onToggleSideBar }) => {
           />
         </form>
       </Container>
-      <Footer />
-
-      {/* SideBar component, its visibility is controlled by showSidebar state */}
-      <SideBar
-        isSideBar={showSidebar} // <--- This prop controls the sidebar's visibility
-        isHomePage={false}
-        toggleSideBar={() => setShowSidebar((prev) => !prev)} // <--- Allows closing the sidebar from within
-      />
-    </>
+    </Layout>
   );
 };
 

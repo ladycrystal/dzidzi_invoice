@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import LogoutPage from "./components/Pages/LoginPage/LogoutPage";
 import LoginPage from "./components/Pages/LoginPage/LoginPage";
 import SignUpPage from "./components/Pages/SignUpPage/SignUpPage";
+import ForgotPassword from "./components/Pages/Auth/ForgotPassword";
+import ResetPassword from "./components/Pages/Auth/ResetPassword";
 //import Home from "./components/Pages/HomePage/Home";
 import NotFound from "./components/Pages/HomePage/NotFound";
 import InvoiceScreen from "./components/screens/Invoice/InvoiceScreen";
@@ -13,8 +16,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./components/Pages/SignUpPage/SignUpPage.css";
 import "./components/Pages/LoginPage/LoginPage.css";
 import GetAddressForm from "./components/Pages/SignUpPage/GetAddressForm";
-import AddressPage from "./components/Pages/SignUpPage/AddressPage";
-import DashboardScreen from "./components/screens/Dashboard/DashboardScreen";
+import AddressPage from "./components/Pages/AddressPage";
+import DashboardScreen from "./components/Pages/Dashboard/DashboardScreen";
 import InvoiceForm from "./components/screens/Invoice/AddNewInvoice/InvoiceForm";
 
 function App() {
@@ -58,7 +61,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/signup" />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/logout" element={<LogoutPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/resetpassword/:token" element={<ResetPassword />} />
         <Route path="/home" element={<DashboardScreen />} />
         <Route path="/invoice" element={<InvoiceScreen />} />
         <Route path="/salaries" element={<SalariesScreen />} />
