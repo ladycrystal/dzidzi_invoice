@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import TextInputField from "../ReusableComponents/TextInputField";
-import PasswordField from "../ReusableComponents/PasswordField";
-import MessageBox from "../ReusableComponents/MessageBox";
-import LoadingScreen from "../../screens/LoadingScreen";
-import FormButton from "../ReusableComponents/FormButton";
+import TextInputField from "../../common/TextInputField";
+import PasswordField from "../../common/PasswordField";
+import MessageBox from "../../common/MessageBox";
+import LoadingScreen from "../../common/LoadingScreen";
+import FormButton from "../../common/FormButton";
 import { MdEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../../../api/axios";
@@ -20,9 +20,9 @@ import {
   Checkbox,
   Grid,
 } from "@mui/material";
-import { GoogleIcon, FacebookIcon } from "../../utils/CustomIcons";
+import { GoogleIcon, FacebookIcon } from "../../../utils/CustomIcons";
 //import AppTheme from "../../utils/AppTheme";
-import ColorModeSelect from "../../utils/ColorModeSelect";
+import ColorModeSelect from "../../../utils/ColorModeSelect";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -219,7 +219,7 @@ function LoginPage() {
             md={6}
             component={StoryBox}
             // push story below form on xs
-            order={{ xs: 2, md: 1 }}
+            order={{ xs: 2, sm: 2, md: 1 }}
           >
             <Typography variant="h3" gutterBottom>
               Why Dzidzi Invoice?
@@ -246,8 +246,8 @@ function LoginPage() {
               alignItems: "center",
               padding: 4,
             }}
-            order={{ xs: 1, md: 2 }}
-            direction={{ xs: "column-reverse", md: "row" }}
+            order={{ xs: 1, sm: 1, md: 2 }}
+            // direction={{ xs: "column-reverse", md: "row" }}
           >
             <Card variant="outlined" className="signup-form-container">
               <Typography
@@ -349,7 +349,7 @@ function LoginPage() {
                     }
                   />
                   <Typography sx={{ fontSize: "11px" }}>
-                    <Link to="">Forgot password?</Link>
+                    <Link to="/forgotpassword">Forgot password?</Link>
                   </Typography>
                 </Box>
 

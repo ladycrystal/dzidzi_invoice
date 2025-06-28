@@ -1,8 +1,8 @@
 import React from "react";
-import NavBar from "../../Pages/ReusableComponents/NavBar/NavBar";
+import NavBar from "../../Pages/NavBar/NavBar";
 import Footer from "../../Pages/Footer/Footer";
 
-const SettingScreen = () => {
+const CustomersScreen = () => {
   return (
     <>
       <NavBar />
@@ -12,4 +12,4 @@ const SettingScreen = () => {
   );
 };
 
-export default SettingScreen;
+export default CustomersScreen;

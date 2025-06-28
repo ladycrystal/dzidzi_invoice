@@ -12,7 +12,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  eheight: 100%;
+  height: 100%;
 
   /* THIS IS THE KEY CHANGE: Set a very high z-index */
   z-index: 9999; /* A high value to ensure it's on top of almost everything */
@@ -27,7 +27,7 @@
     248,
     249,
     250,
-    0.75
+    0.5
   ); /* Matches bg-light bg-opacity-75 */
 }
 

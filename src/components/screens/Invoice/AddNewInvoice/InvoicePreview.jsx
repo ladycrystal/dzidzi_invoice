@@ -9,7 +9,7 @@ import {
   Alert,
 } from "@mui/material";
 import dayjs from "dayjs";
-import FormButton from "../../../Pages/ReusableComponents/FormButton";
+import FormButton from "../../../common/FormButton";
 import API from "../../../../api/axios";
 
 const InvoicePreview = ({ invoiceData }) => {

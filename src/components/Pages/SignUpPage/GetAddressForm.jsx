@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import TextInputField from "../ReusableComponents/TextInputField";
-import LoadingScreen from "../../screens/LoadingScreen";
-import useChangeHandler from "../../hooks/useChangeHandler";
+import TextInputField from "../../common/TextInputField";
+import LoadingScreen from "../../common/LoadingScreen";
+import useChangeHandler from "../../../utils/hooks/useChangeHandler";
 import API from "../../../api/axios";
-import MessageBox from "../ReusableComponents/MessageBox";
-import FormButton from "../ReusableComponents/FormButton";
+import MessageBox from "../../common/MessageBox";
+import FormButton from "../../common/FormButton";
 import { Link, useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -47,15 +47,18 @@ const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignSelf: "center",
-  width: "100%",
+  // width: "100%",
+  height: "70%",
   padding: theme.spacing(4),
   gap: theme.spacing(2),
-  minHeight: "99%",
-  margin: "auto",
+  maxHeight: "100vh",
+  margin: "0 auto",
   boxShadow:
     "hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px",
   [theme.breakpoints.up("sm")]: {
     width: "450px",
+    height: "535px",
+    maxHeight: "calc(100vh - 64px)", // Adjust for header height
   },
   ...theme.applyStyles("dark", {
     boxShadow:
@@ -194,6 +197,7 @@ const GetAddressForm = () => {
           sx={{
             px: 2,
             py: 1.5,
+            mt: 2,
             // borderRadius: 2,
             backgroundColor: "background.paper",
             //boxShadow: 3, // Material UI elevation
@@ -213,34 +217,37 @@ const GetAddressForm = () => {
           </Typography>
         </StoryBox>
         <Card
-          component={StoryBox}
+          onSubmit={HandleSubmit}
+          noValidate
+          component="form"
           xs={12}
           md={6}
           sx={{
             maxWidth: "100%",
-            mt: -2,
-            maxHeight: "100%",
+            //mt: -2,
+            // maxHeight: "100%",
+
             // overflowY: "auto",
           }}
         >
-          <Box
+          {/* <Box
             component="form"
             onSubmit={HandleSubmit}
             noValidate
-            sx={{ display: "flex", flexDirection: "column", gap: 1 }}
+            sx={{ display: "flex", flexDirection: "column", gap: 1, mt: -10 }}
+          > */}
+          <Typography
+            component="h1"
+            variant="h4"
+            sx={{
+              width: "100%",
+              fontSize: "clamp(2rem, 10vw, 2.15rem)",
+              // mt: 3,
+            }}
           >
-            <Typography
-              component="h1"
-              variant="h4"
-              sx={{
-                width: "100%",
-                fontSize: "clamp(2rem, 10vw, 2.15rem)",
-                // mt: 3,
-              }}
-            >
-              Personal Details
-            </Typography>
-            {/* <TextInputField
+            Personal Details
+          </Typography>
+          {/* <TextInputField
               id="firstname"
               name="firstname"
               value={formData.firstname}
@@ -275,63 +282,66 @@ const GetAddressForm = () => {
               showValidationIcons={false}
             /> */}
 
-            <TextInputField
-              id="city"
-              name="city"
-              value={formData.city}
-              label="City"
-              placeholder="Enter city"
-              valid={formData.city.trim() !== ""}
-              onChange={handleChange}
-              required
-              showValidationIcons={false}
-            />
+          <TextInputField
+            id="city"
+            name="city"
+            value={formData.city}
+            label="City"
+            placeholder="Enter city"
+            valid={formData.city.trim() !== ""}
+            onChange={handleChange}
+            required
+            showValidationIcons={false}
+          />
 
-            <TextInputField
-              id="country"
-              name="country"
-              value={formData.country}
-              label="Country"
-              placeholder="Enter country"
-              valid={formData.country.trim() !== ""}
-              onChange={handleChange}
-              required
-              showValidationIcons={false}
-            />
-            <TextInputField
-              id="postal_code"
-              name="postal_code"
-              value={formData.postal_code}
-              label="Postal Code"
-              placeholder="Enter postal code"
-              valid={formData.postal_code.trim() !== ""}
-              onChange={handleChange}
-              required
-              showValidationIcons={false}
-            />
-            <TextInputField
-              id="street"
-              name="street"
-              value={formData.street}
-              label="Street"
-              placeholder="Enter street"
-              valid={formData.street.trim() !== ""}
-              onChange={handleChange}
-              required
-              showValidationIcons={false}
-            />
+          <TextInputField
+            id="country"
+            name="country"
+            value={formData.country}
+            label="Country"
+            placeholder="Enter country"
+            valid={formData.country.trim() !== ""}
+            onChange={handleChange}
+            required
+            showValidationIcons={false}
+          />
+          <TextInputField
+            id="postal_code"
+            name="postal_code"
+            value={formData.postal_code}
+            label="Postal Code"
+            placeholder="Enter postal code"
+            valid={formData.postal_code.trim() !== ""}
+            onChange={handleChange}
+            required
+            showValidationIcons={false}
+          />
+          <TextInputField
+            id="street"
+            name="street"
+            value={formData.street}
+            label="Street"
+            placeholder="Enter street"
+            valid={formData.street.trim() !== ""}
+            onChange={handleChange}
+            required
+            showValidationIcons={false}
+          />
+          {/* Message Box for success or error */}
+          <MessageBox
+            message={message}
+            isError={isError}
+            style={{ margin: "0px" }}
+          />
 
-            {/* Message Box for success or error */}
-            <MessageBox message={message} isError={isError} />
-
-            {/* Form submission button */}
-            <FormButton
-              type="submit"
-              variant="contained"
-              text={isSubmitting ? "Submitting..." : "Save Address"}
-              disabled={isSubmitting}
-            />
-          </Box>
+          {/* Form submission button */}
+          <FormButton
+            type="submit"
+            variant="contained"
+            text={isSubmitting ? "Submitting..." : "Save Address"}
+            disabled={isSubmitting}
+          />
+          {/* </Box> */}
         </Card>
       </SignUpContainer>
     </>

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import TextInputField from "../ReusableComponents/TextInputField";
-import PasswordField from "../ReusableComponents/PasswordField";
-import MessageBox from "../ReusableComponents/MessageBox";
-import FormButton from "../ReusableComponents/FormButton";
-import LoadingScreen from "../../screens/LoadingScreen";
+import TextInputField from "../../common/TextInputField";
+import PasswordField from "../../common/PasswordField";
+import MessageBox from "../../common/MessageBox";
+import FormButton from "../../common/FormButton";
+import LoadingScreen from "../../common/LoadingScreen";
 import { FaUser, FaPhone } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
@@ -24,7 +24,7 @@ import {
   FormHelperText,
   Container,
 } from "@mui/material";
-import { GoogleIcon, FacebookIcon } from "../../utils/CustomIcons";
+import { GoogleIcon, FacebookIcon } from "../../../utils/CustomIcons";
 
 const RootGrid = styled(Grid)(({ theme }) => ({
   minHeight: "100vh",
@@ -358,7 +358,7 @@ function SignUpPage() {
               md={4}
               component={StoryBox}
               // push story below form on xs
-              order={{ xs: 2, md: 1, lg: 1 }}
+              order={{ xs: 2, md: 1, sm: 2 }}
             >
               <Typography variant="h3" gutterBottom>
                 Why Dzidzi Invoice?
@@ -387,11 +387,23 @@ function SignUpPage() {
                 padding: 4,
                 // mt: 5,
               }}
-              order={{ xs: 1, md: 2, lg: 2 }}
+              order={{ xs: 1, md: 2, sm: 1 }}
               // direction={{ xs: "column-reverse", md: "row" }}
             >
-              <Box mt={-5}>
-                <Card variant="outlined" className="signup-form-container">
+              <Box
+              // mt={-5}
+              >
+                <Card
+                  variant="outlined"
+                  className="signup-form-container"
+                  sx={{
+                    width: "100%",
+                    maxWidth: { xs: "100%", sm: 500 },
+                    mx: "auto",
+                    p: { xs: 1, sm: 4 },
+                    boxSizing: "border-box",
+                  }}
+                >
                   <Typography
                     component="h1"
                     variant="h4"
@@ -420,15 +432,19 @@ function SignUpPage() {
                     component="form"
                     onSubmit={handleSubmit}
                     noValidate
-                    spacing={{ xs: 2, md: 3 }}
-                    xs={12}
-                    md={12}
+                    spacing={
+                      2
+                      //  xs: 2,
+                      //  md: 3
+                    }
+                    // xs={12}
+                    // md={12}
                     sx={{ width: "100%" }}
                   >
                     <Grid
                       item
                       xs={12}
-                      md={6}
+                      sm={6}
                       // sx={{ width: "40%" }}
                     >
                       <TextInputField
@@ -456,7 +472,7 @@ function SignUpPage() {
                     <Grid
                       item
                       xs={12}
-                      md={6}
+                      sm={6}
                       //  sx={{ width: "40%" }}
                     >
                       <TextInputField
@@ -481,22 +497,20 @@ function SignUpPage() {
                         onBlur={() => setLastNameFocus(false)}
                       />
                     </Grid>
-                  </Grid>
-                  <Grid
+                    {/* </Grid> */}
+                    {/* <Grid
                     container
-                    //component="form"
-                    //onSubmit={handleSubmit}
-                    // noValidate
+                    
                     spacing={{ xs: 2, md: 3 }}
                     xs={12}
                     md={12}
                     sx={{ width: "100%" }}
                     fullWidth
-                  >
+                  > */}
                     <Grid
                       item
                       xs={12}
-                      md={6}
+                      sm={6}
                       // sx={{ width: "40%" }}
                     >
                       <TextInputField
@@ -522,7 +536,7 @@ function SignUpPage() {
                     <Grid
                       item
                       xs={12}
-                      md={6}
+                      sm={6}
                       // sx={{ width: "40%" }}
                     >
                       <TextInputField
@@ -545,8 +559,8 @@ function SignUpPage() {
                         onBlur={() => setEmailFocus(false)}
                       />
                     </Grid>
-                  </Grid>
-                  <Grid
+                    {/* </Grid> */}
+                    {/* <Grid
                     container
                     // component="form"
                     // onSubmit={handleSubmit}
@@ -556,11 +570,11 @@ function SignUpPage() {
                     md={6}
                     sx={{ width: "100%" }}
                     fullWidth
-                  >
+                  > */}
                     <Grid
                       item
                       xs={12}
-                      md={6}
+                      sm={6}
                       //sx={{ width: "40%" }}
                     >
                       <PasswordField
@@ -597,7 +611,7 @@ function SignUpPage() {
                     <Grid
                       item
                       xs={12}
-                      md={6}
+                      sm={6}
                       //sx={{ width: "40%" }}
                     >
                       <PasswordField
@@ -674,7 +688,8 @@ function SignUpPage() {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      marginTop: "-30px",
+                      // marginTop: "-30px",
+                      mt: 1,
                     }}
                   >
                     <FormControlLabel
@@ -721,7 +736,7 @@ function SignUpPage() {
                   />
                   {/* </Grid> */}
 
-                  <Divider>
+                  <Divider sx={{ my: 2 }}>
                     <Typography sx={{ color: "text.secondary" }}>or</Typography>
                   </Divider>
                   <Box
@@ -752,7 +767,6 @@ function SignUpPage() {
                       </Typography>
                     </Box>
                   </Box>
-                  {/* </div> */}
                 </Card>
               </Box>
             </Grid>

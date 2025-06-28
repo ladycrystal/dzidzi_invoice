@@ -55,6 +55,8 @@ function PasswordField({
 
       <div className="form-group-style" style={{ width: "100%" }}>
         <TextField
+          fullWidth
+          sx={{ width: "100%" }}
           type={visible ? "text" : "password"} //toggle type dynamically
           id={id}
           inputRef={refProp}
